@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // default is for all fields: 0
 var fields = {
     "type": {
