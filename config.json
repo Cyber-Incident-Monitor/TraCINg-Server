@@ -1,0 +1,15 @@
+{
+	"db": "sqlite:///tmp/test.sqlite?debug=true",
+	"server": {
+        	"httpPort": 8888,
+        	"httpsPort": 9999,
+        	"webroot": "./frontend"
+	},
+	"ssl":  {
+		"keyPath": "ssl/server_key.pem",
+		"certPath": "ssl/server_cert.pem",
+		"caPath": "ssl/ca_cert.pem",
+		"requestCert": true,
+		"rejectUnauthorized": false
+	}
+}
