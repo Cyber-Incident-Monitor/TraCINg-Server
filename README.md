@@ -102,7 +102,8 @@ The server comes with a configuration file (config.json) which must be adapted t
   * rejectUnauthorized: if true unauthorized sensors are rejected
 
 ## Server Interface ##
-A sensor must stick to the following JSON notation of a data entry to be sent to this server:
+A sensor must stick to the following JSON notation of a data entry to be sent to this server. Note that
+the data entry must be in one line and must not be separated by line breaks as shown here for a better readability:
 ```json
 {
 	"sensor": {
@@ -125,8 +126,22 @@ A sensor must stick to the following JSON notation of a data entry to be sent to
 ```
 This data must be sent via a POST message to the HTTPS server in order to be receipt correctly.
 The sensor may send multiple datasets in one POST message each separated with a "\n".
+
 The following table shows which data fields may be ommited and which are mandatory along with the default
 values set if not provided:
+
+| Field		| Description			| Datatype	| Example		| default value		|
+|---------------|-------------------------------|---------------|-----------------------|-----------------------|
+| sensor.name	| sensor name			| String	| Sensor1		| "Unknown"		|
+| sensor.type	| sensor type			| String	| Honeypot		| "Unknown"		|
+| src.ip	| attacker IP			| String	| 130.83.151.135	| **mandatory field**	|
+| src.port	| attacker port			| Integer	| 54321			| 0			|
+| dst.ip	| attacked IP (sensor IP)	| String	| 130.83.151.136	| empty string		|
+| dst.port	| attacked port	(sensor port)	| Integer	| 80			| 0			|
+| type		| attack type (cf. next table)	| Integer	| 11			| "Unknown"		|
+| log		| attack log			| String	| TCP accept...		| empty string		|
+| md5sum	| md5sum of a malware		| String	| 0e65972dce68...	| empty string		|
+| date		| date of the attack		| Integer	| 1376645816		| time of the server	|
 
 
 
