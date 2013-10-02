@@ -1,8 +1,35 @@
-server
-======
+TraCINg server
+==============
 
 A webserver gathering incidents and visualize them in multiple ways.
 This product includes GeoLite data created by MaxMind, available from http://maxmind.com/
+
+## Features ##
+This server consists internally of two servers, at first a HTTPS server receiving sensor data
+and at second a HTTP server serving a website to visualize these data.
+Sensors are for example honeypots or intrusion detection systems (IDS) coll
+
+The HTTP server acts like a simple webserver with static content. Dynamic content is served using
+[Socket.IO](http://socket.io/).
+
+The HTTPS servers purpose is to receive sensor data, to store them in the database and to broadcast it via
+socket.io to every client currently viewing the content of the HTTP server.
+The encryption is mandatory to protect the sensors identy by hiding the content of the data transmission.
+This is necessary to avoid revealing the IP addresses of sensors by observing the transmitted content which
+could lead to blacklisting of sensor IPs in malware.
+Note that sensors are encouraged to hide their IP addresses using for example [TOR](https://www.torproject.org)
+to avoid revealing their IPs by observing the traffic to the HTTPS server with the assumption that every sent
+message to the HTTPS server is most likely sent from a sensor.
+
+In order to ensure genuine sensor data an authentification is used to regocnize trustworthy sensors.
+This authentification is based on a public-key infrastructure (PKI) using a certificate authority (CA) to
+sign the client certificates.
+The authentification is based on sending the client certificate at the TLS handshake and verifying it on the
+server using the CA certificate.
+
+Thus authorizing a sensor requires the sensor to send a certificate request to the CA and to get a valid
+certificate from the CA.
+
 
 ## Requirements ##
 ### Server ###
@@ -73,5 +100,4 @@ The server comes with a configuration file (config.json) which must be adapted t
   * caPath: the path to the CA certificate
   * requestCert: if true the server requests a certificate to check sensors authenticity
   * rejectUnauthorized: if true unauthorized sensors are rejected
-
 
