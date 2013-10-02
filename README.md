@@ -139,18 +139,18 @@ The sensor may send multiple datasets in one POST message each separated with a 
 The following table shows which data fields may be ommited and which are mandatory along with the default
 values set if not provided:
 
-| Field		| Description			| Datatype	| Example		| default value		|
-|---------------|-------------------------------|---------------|-----------------------|-----------------------|
-| sensor.name	| sensor name			| String	| Sensor1		| "Unknown"		|
-| sensor.type	| sensor type			| String	| Honeypot		| "Unknown"		|
-| src.ip	| attacker IP			| String	| 130.83.151.135	| **mandatory field**	|
-| src.port	| attacker port			| Integer	| 54321			| 0			|
-| dst.ip	| attacked IP (sensor IP)	| String	| 130.83.151.136	| *empty string*	|
-| dst.port	| attacked port	(sensor port)	| Integer	| 80			| 0			|
-| type		| attack type (cf. next table)	| Integer	| 11			| "Unknown"		|
-| log		| attack log			| String	| TCP accept...		| *empty string*	|
-| md5sum	| md5sum of a malware		| String	| 0e65972dce68...	| *empty string*	|
-| date		| date of the attack		| Integer	| 1376645816		| *time of the server*	|
+| Field		| Description			| Datatype	| Example		| default value			|
+|---------------|-------------------------------|---------------|-----------------------|-------------------------------|
+| sensor.name	| sensor name			| String	| Sensor1		| "Unknown"			|
+| sensor.type	| sensor type			| String	| Honeypot		| "Unknown"			|
+| src.ip	| attacker IP			| String	| 130.83.151.135	| **mandatory field**		|
+| src.port	| attacker port			| Integer	| 54321			| 0				|
+| dst.ip	| attacked IP (sensor IP)	| String	| 130.83.151.136	| *empty string*		|
+| dst.port	| attacked port	(sensor port)	| Integer	| 80			| 0				|
+| type		| attack type (cf. next table)	| Integer	| 11			| "Unknown"			|
+| log		| attack log			| String	| TCP accept...		| *empty string*		|
+| md5sum	| md5sum of a malware		| String	| 0e65972dce68...	| *empty string*		|
+| date		| date of the attack		| Integer	| 1376645816		| *unix time of the server*	|
 
 The following table shows the association between attack type numbers and attack type definitions:
 
