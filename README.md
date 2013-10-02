@@ -150,7 +150,7 @@ values set if not provided:
 | type		| attack type (cf. next table)	| Integer	| 11			| "Unknown"		|
 | log		| attack log			| String	| TCP accept...		| *empty string*	|
 | md5sum	| md5sum of a malware		| String	| 0e65972dce68...	| *empty string*	|
-| date		| date of the attack		| Integer	| 1376645816		| time of the server	|
+| date		| date of the attack		| Integer	| 1376645816		| *time of the server*	|
 
 The following table shows the association between attack type numbers and attack type definitions:
 
