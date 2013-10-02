@@ -155,5 +155,13 @@ var map = function(container, map, backgroundColor) {
 	function redrawIncidentsPerCountry() {
 		mapObject.series.regions[0].setValues(incidentsPerCountry);
 	};
-
+	
+	/**
+	 * State whether any country has at least one marker
+	 */
+	this.hasMarker = function() {
+		if (incidents > 0)
+			return true;
+		return false;
+	}
 }

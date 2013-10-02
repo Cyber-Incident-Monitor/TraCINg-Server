@@ -15,6 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
  
 /**
  * Creates a world object containing a 2d map, 2d streetmap and a 3d globe
@@ -301,6 +302,9 @@ var world = new function() {
 	 * Mark an incident on the 2d map, the street map and the 3d globe
 	 */
 	this.markIncident = function(data, live, noAnimation) {
+		// remove alert saying "Waiting for attacks..."
+	    $("#tableWaitingAlert").remove();
+	
 		// update hashmap for displaying number of attacks per LatLng
 		llHash = new String(data.src.ll[0]) + new String(data.src.ll[1]);
 		if (attackNumberHash[llHash] != undefined) {
@@ -364,10 +368,39 @@ var world = new function() {
 	}
 	
 	/**
+	 * State whether there is a marker on the jVectorMap
+	 */
+	this.jvmHasMarker = function() {
+		if (mapObject != undefined) {
+			return mapObject.hasMarker();
+		}
+		return false;
+	}
+	
+	/**
+	 * State whether there is a marker on the streetmap
+	 */
+	this.stMapHasMarker = function() {
+		if (streetmapObject != undefined) {
+			return streetmapObject.hasMarker();
+		}
+		return false;
+	}
+	
+	/**
+	 * State whether there is a marker on the globe
+	 */
+	this.globeHasMarker = function() {
+		if (globeObject != undefined) {
+			return globeObject.hasMarker();
+		}
+		return false;
+	}
+	
+	/**
 	 * Reset every marker on the 2d map, the streetmap and the 3d globe
 	 */
 	this.reset = function() {
-		// TODO reset incidents per country
 		// reset 2d maps abd globe
 		mapObject && mapObject.reset();
 		streetmapObject && streetmapObject.reset();
@@ -522,8 +555,6 @@ var world = new function() {
 	 * Make table entries (includes time formatting)
 	 */
 	function makeTableEntry(htmlcode) {
-		// remove alert saying "Waiting for attacks..."
-	    $("#tableWaitingAlert").remove();
 		$('#attackEntries').append(htmlcode);
 	}
 	this.makeTableEntry = makeTableEntry;

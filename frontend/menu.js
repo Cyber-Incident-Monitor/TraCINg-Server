@@ -16,9 +16,9 @@
  * limitations under the License.
  */
 
-var help = false;		//states whether help is active
-var live = true;		//states whether live or database view is active
-var trigger = "hover";	//states whether the help popovers will show on hover (or click -> on click|focus -> on focus)
+var help = false;		// states whether help is active
+var live = true;		// states whether live or database view is active
+var trigger = "hover";	// states whether the help popovers will show on hover (or click -> on click|focus -> on focus)
 
 /*
 set content of leftContent to div with given id and hide other divs
@@ -103,10 +103,14 @@ function updateHelpElements() {
  */
 function updateMenu(tab){
 		// "2D View" entry chosen via hash, show 2D map
-	    if(tab == 'map') {
-	    	// remove alert
-	    	$("#tableWaitingAlert").remove();
+	    if (tab == 'map') {
 	    	world.showMap();
+	    	// if there is no attack data show an info alert
+			if (!world.jvmHasMarker())
+				showInfoNoData();
+			// if there is attack data remove the info alert
+			else
+				$("#tableWaitingAlert").remove();
 	    	// set help if active
 	    	if (help)
 		    	$("#helpEntry").addClass("active");
@@ -119,10 +123,14 @@ function updateMenu(tab){
 			$("#resetMap").removeClass("disabled");
 		}
 		// "Street View" entry chosen via hash, show streetmap
-		else if(tab == 'streetmap') {
-			// remove alert
-	    	$("#tableWaitingAlert").remove();
+		else if (tab == 'streetmap') {
 			world.showStreetmap();
+			// if there is no attack data show an info alert
+			if (!world.stMapHasMarker())
+				showInfoNoData();
+			// if there is attack data remove the info alert
+			else
+				$("#tableWaitingAlert").remove();
 			if (help)
 				$("#helpEntry").addClass("active");
 			
@@ -131,10 +139,14 @@ function updateMenu(tab){
 			$("#resetMap").removeClass("disabled");
 		}
 		// "3D View" entry chosen via hash, show 3D map
-		else if(tab == 'globe') {
-			// remove alert
-	    	$("#tableWaitingAlert").remove();
-	    	world.showGlobe();
+		else if (tab == 'globe') {
+			world.showGlobe();
+			// if there is no attack data show an info alert
+			if (!world.globeHasMarker())
+				showInfoNoData();
+			// if there is attack data remove the info alert
+			else
+				$("#tableWaitingAlert").remove();
 			if (help)
 				$("#helpEntry").addClass("active");
 			
@@ -143,13 +155,16 @@ function updateMenu(tab){
 			$("#resetMap").removeClass("disabled");
 		}
 		// "Table View" entry chosen via hash, show table
-		else if(tab == 'table') {
+		else if (tab == 'table') {
 			world.leaveMap();
 			if (help)
 		    	$("#helpEntry").addClass("active");
 		    // if there is no attack data show an info alert
 		    if ($("#table table tbody tr").length == 0)
-		    	showalert("tableWaitingAlert", "Waiting for data...", "Once attacks occur or are requested they will show up below.", "info", false);
+		    	showInfoNoData();
+			// if there is attack data remove the info alert
+			else
+				$("#tableWaitingAlert").remove();
 			
 			updateWins("dbWin", !live, true, !live && requestAttackUpdate);
 			$("#advMarkerInfo").addClass("disabled");
@@ -167,7 +182,7 @@ function updateMenu(tab){
 
 			var chartsCreated = createCharts();
 			// reload charts, the filter could have been changed on another tab
-			if(!chartsCreated)
+			if (!chartsCreated)
 				filterUpdateStats();
 
 			$("#advMarkerInfo").addClass("disabled");
@@ -243,17 +258,39 @@ $(function () {
 		});
 });
 
+// show "no data" alert
+function showInfoNoData() {
+	// show an alert if none exists
+	if (!$("#tableWaitingAlert").length > 0) {
+		showalert("tableWaitingAlert", "Waiting for data...", "Once attacks occur or are requested in the dabase view they will show up below. To display attacks on both maps and the globe you need to load them separately (i.e. click their menu entry once). Otherwise they will stay empty even if attacks occur until you load them.", "info", false);
+	}
+}
+
+// reset map and table
+function refreshMap() {
+	// show "no data" alert if map, globe or table is active
+	if (!$("#stats").is(":visible"))
+		showInfoNoData();
+	// reset maps and table
+	world.reset();
+	world.resetTable();
+}
+
 
 // allow keyboard control in about view (modal)
 // based on http://stackoverflow.com/questions/16718443/use-keyboard-to-scroll-in-twitters-bootstrap-2-x-modal-popup
 $(function () {
 	$('#aboutView').keydown(function(e) {
 		// scroll up and down in the modal
-		e.preventDefault();
 		var speed = 50;		// scroll speed
-		if(e.keyCode == 40){$('.modal-body').scrollTop($('.modal-body').scrollTop() + speed);}
-		if(e.keyCode == 38){$('.modal-body').scrollTop($('.modal-body').scrollTop() - speed);}
-
+		if (e.keyCode == 40) {
+			e.preventDefault();
+			$('.modal-body').scrollTop($('.modal-body').scrollTop() + speed);
+		}
+		if (e.keyCode == 38) {
+			e.preventDefault();
+			$('.modal-body').scrollTop($('.modal-body').scrollTop() - speed);
+		}
 	});
 	// Disable key control of the maps/globe if modal is active
 	$('#aboutView').on('show', function(e) {world.toggleEnabled();});

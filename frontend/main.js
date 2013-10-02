@@ -67,6 +67,7 @@ function goToLocationHash(){
 
 	// hide all containers
 	$("#mainContent > div").hide();
+	$("#errorOutput").show();
 
 	// remove active from all menu entries
 	$("#menutabs > li").removeClass('active');
@@ -86,7 +87,7 @@ function goToLocationHash(){
 	
 	// toggle active in menu bar
 	var nav_li = $("#tab_"+tab).parent();
-	console.log("nav_li", nav_li);
+	//console.log("nav_li", nav_li);
 	nav_li && nav_li.addClass('active');
 }
 

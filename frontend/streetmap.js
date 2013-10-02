@@ -25,6 +25,7 @@ var streetmap = function(container) {
 	var markerArray = [maxKey];			// array containing all markers
 	var uniqueKey = 0;					// unique key for marker id
 	var holdTime = 100;					// time in ms until a label disappears
+	var incidents = 0;					// total sum of incidents
 	
 	// create the tile layer with correct attribution
 	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -48,6 +49,8 @@ var streetmap = function(container) {
 	 * mark incident on the map
 	 */
 	this.addMarker = function(ll, color, label) {
+		
+		incidents++;
 		
 		// create a marker (leaflet circle)
 		var size = 500; // 500 meter circle
@@ -117,6 +120,7 @@ var streetmap = function(container) {
 			removeMarker(i);
 		}
 		uniqueKey = 0;
+		incidents = 0;
 	}
 	
 	/*
@@ -138,6 +142,15 @@ var streetmap = function(container) {
 	 */
 	this.move = function(x, y) {
 		stmap.panBy([-x, -y]);
+	}
+	
+	/*
+	 * State whether any country has at least one marker
+	 */
+	this.hasMarker = function() {
+		if (incidents > 0)
+			return true;
+		return false;
 	}
 }
 

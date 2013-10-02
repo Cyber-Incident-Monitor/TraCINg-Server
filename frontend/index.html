@@ -436,10 +436,17 @@
 		<div class="modal-body">
 			<h4>Contents</h4>
 			<ul>
-				<a href="#aboutData">About the represented Data</a><br />
 				<a href="#aboutTracing">The TraCINg Project</a><br />
-				<a href="#aboutSoftware">Utilized Software/Hardware</a>
+				<a href="#aboutData">About the represented Data</a><br />
 			</ul>
+			<h4 id="aboutTracing">The TraCINg Project</h4>
+			<p>"TraCINg" stands for "TUD Cyber Incident Monitor". "TUD" stands for "Technical University Darmstadt". The project was proposed by Emmanouil Vasilomanolakis from <a href="http://www.cased.de/">CASED</a> (Center for Advanced Security Research Darmstadt) and was implemented by Matthias Gazzari, Annemarie Mattmann and André Wolski with assistance of Andre Mougoui on the sensor part in connection to a bachelor practical. In this context we would like to thank Christian Schowalter for his voluntary support in designing the Globe part of the project.<br />
+			The project was created for you. You and every other person who ever comes to visit this website. While the topic of this project is monitoring cyber incidents coming from sensors the substance of it is sharing information and giving you just a little imprint of the possible danger outside there - on the Internet.</p>
+			<p>
+			Our Project on Github: <a href="https://github.com/Cyber-Incident-Monitor">Cyber-Incident-Monitor</a>
+			<br />
+			Related Projects: <a href="http://www.tk.informatik.tu-darmstadt.de/de/research/secure-smart-infrastructures/hostage">Hostage Mobile Honeypot</a>
+			</p>
 			<h4 id="aboutData">About the represented Data</h4>
 			<p>The data represented on this website is data collected by Sensors like Honeypots and Intrusion Detection Systems.</p>
 			<h5>Honeypot</h5>
@@ -450,38 +457,6 @@
 			<h5>Attack Data</h5>
 			<p>The recorded attacks are mostly those of malware. The unfortunate thing about malware is that it continuously spreads by searching (usually) random targets. So if you see an attack from somewhere don't make the mistake to automatically blame "these evil guys from XYZ" because they might not even know that they are attacking anyone (it might not be them but the malware on their systems). Because if your computer gets infected by malware and you connect to the Internet the malware will start attacking others from your computer. Incidentally of course it also has some very bad affect on your own computer like steal your private data, passwords and a thousand other evil things. So in fact if your computer is infected with malware (which is not very unlikely) it might be that by chance it attacks one of our sensors one day and your home town gets a nice red circle to remind you of it. Might be. Of course there might also be a very evil person somewhere below or near that red circle creating malware. One never knows, some people do.<br />
 			Anyway the recorded data is, as you might have learned by now, data recorded by our sensors every time an attack occurs. This data is send to our server where it is stored in the database and also send to each client (like your computer). The client displays the data (for example to you). The communication between sensor and server is encrypted. Also sensors may be authorized or may not be. Those who are not are probably just enthusiastic people who want to provide collected data from their own sensors but who are not known to be trustworthy for the CA (Certificate Authority, your sensor needs a certificate to become authorized) or merely did not ask for a certificate. We marked those for you so you will be able to distinguish between authorized and unauthorized sensors. However this data represents an attack on one of our sensors only, mind you. There are many many more attacks happening somewhere else this very second. And your computer is always one of the targets the question is whether it is protected well enough.</p>
-			<h4 id="aboutTracing">The TraCINg Project</h4>
-			<p>"TraCINg" stands for "TUD Cyber Incident Monitor". "TUD" stands for "Technical University Darmstadt". The project was proposed by Emmanouil Vasilomanolakis from <a href="http://www.cased.de/">CASED</a> (Center for Advanced Security Research Darmstadt) and was implemented by Matthias Gazzari, Annemarie Mattmann and André Wolski with assistance of Andre Mougoui on the sensor part in connection to a bachelor practical. In this context we would like to thank Christian Schowalter for his voluntary support in designing the Globe part of the project.<br />
-			The project was created for you. You and every other person who ever comes to visit this website. While the topic of this project is monitoring cyber incidents coming from sensors the substance of it is sharing information and giving you just a little imprint of the possible danger outside there - on the Internet.</p>
-			<h4 id="aboutSoftware">Utilized Software/Hardware</h4>
-			<p>
-			Frontend/Client:
-			<ul>
-				<li><b>General surface</b>: <a href="http://getbootstrap.com/">Bootstrap</a>, <a href="http://jqueryui.com/">jQuery UI</a>, <a href="http://glyphicons.com/">Glyphicons</a></li>
-				<li><b>Country map (Country View) and Filter map</b>: <a href="http://jvectormap.com/">jVectorMap</a></li>
-				<li><b>Detailed map (Map View)</b>: <a href="http://www.openstreetmap.org/">OpenStreetMap</a></li>
-				<li><b>3D Globe (3D View)</b>: <a href="http://data-arts.appspot.com/globe-search/">WebGL Globe</a>, <a href="http://threejs.org/">three.js</a></li>
-				<li><b>Statistics</b>: <a href="http://www.highcharts.com/">Highcharts</a></li>
-				<li><b>Behind it all</b>: <a href="http://jquery.com/">jQuery</a></li><!-- jquery-ui, jquery-ui-multiselect-widget -->
-			</ul>
-			Backend:
-			<ul>
-				<li><b>Server</b>: <a href="http://nodejs.org/">node.js</a>, <a href="https://github.com/cloudhead/node-static">node-static</a></li>
-				<li><b>Database</b>: <a href="https://github.com/dresende/node-orm2">node-orm2</a></li>
-				<li><b>GeoIP</b>: <a href="https://github.com/bluesmoon/node-geoip">node-geoip</a></li>
-			</ul>
-			Communication Part:
-			<ul>
-				<li><b>Sensor/Server Communication</b>: <a href="http://www.openssl.org/">OpenSSL for TLS (Transport Layer Security)</a></li>
-				<li><b>Server/Client Communication</b>: <a href="http://socket.io/">socket.io</a></li>
-			</ul>
-			Sensors:
-			<ul>
-				<li><b>Raspberry Pi running</b>: <a href="http://dionaea.carnivore.it/">Dionaea Honeypot</a></li>
-				<li><b>Mobile Devices running</b>: <a href="http://www.tk.informatik.tu-darmstadt.de/de/research/secure-smart-infrastructures/hostage">Hostage Mobile Honeypot</a></li>
-			</ul>
-			This Project was inspired by but is not based on: <a href="http://map.honeycloud.net/">The Honeymap Project</a></li>
-			</p>
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

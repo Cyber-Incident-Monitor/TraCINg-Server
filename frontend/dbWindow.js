@@ -52,17 +52,6 @@ function requestAttacks() {
 	}
 }
 
-// reset map and table
-function refreshMap() {
-	// show table no data alert if table is active
-	if ($("#table").is(":visible") && $("#table table tbody tr").length > 0)
-		showalert("tableWaitingAlert", "Waiting for data...", "Once attacks occur or are requested they will show up below.", "info", false);
-	// reset maps and table
-	world.reset();
-	world.resetTable();
-}
-
-
 /* control buttons */
 
 // onclick control buttons methods
