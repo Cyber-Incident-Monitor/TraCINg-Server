@@ -101,19 +101,33 @@ The server comes with a configuration file (config.json) which must be adapted t
   * requestCert: if true the server requests a certificate to check sensors authenticity
   * rejectUnauthorized: if true unauthorized sensors are rejected
 
-## Sensor Protocol ##
-A sensor must stick to the following protocol to send data to this server. Additionally they are encouraged to place
-a certificate request to the CA in order to be authorized.
-
-```javascript
-payload = 
+## Server Interface ##
+A sensor must stick to the following JSON notation of a data entry to be sent to this server:
+```json
 {
-	sensor: {name, type},
-	src: {ip, port},
-	dst: {ip, port},
-	type: typeid,
-	log: log,
-	md5sum: md5sum,
-	date: unix_timestamp
+	"sensor": {
+		"name": "sensorName",
+		"type": "sensorType"
+	},
+	"src": {
+		"ip": "sourceIP",
+		"port": "sourcePort"
+	},
+	"dst": {
+		"ip": "destinationIP",
+		"port": "destinationPort"
+	},
+	"type": "incidentTypeID",
+	"log": "incidentLog",
+	"md5sum": "incidentMd5sum",
+	"date": "unixTimestamp"
 }
 ```
+This data must be sent via a POST message to the HTTPS server in order to be receipt correctly.
+The sensor may send multiple datasets in one POST message each separated with a "\n".
+The following table shows which data fields may be ommited and which are mandatory along with the default
+values set if not provided:
+
+
+
+Additionally a sensor provider is encouraged to place a certificate request to the CA in order to be authorized.
