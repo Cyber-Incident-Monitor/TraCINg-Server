@@ -143,6 +143,17 @@ values set if not provided:
 | md5sum	| md5sum of a malware		| String	| 0e65972dce68...	| empty string		|
 | date		| date of the attack		| Integer	| 1376645816		| time of the server	|
 
+The following table shows the association between attack type numbers and attack type definitions:
 
+| Attack Type 	| Attack Name 		| Attack Description												|
+|---------------|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| 0		| Unknown		| The sensor could not determine the attack type								|
+| 10		| Transport Layer	| The attacker connected to an open port, but did not interact with it						|
+| 11		| Portscan		| The attacker tried to connect to a closed port								|
+| 20		| Shellcode Injection	| The attacker successfully used an emulated security issue and would have been able to execute malicious code	|
+| 30		| SQL			| Attack on a database server											|
+| 31		| MySQL			| Attack on a MySQL database server										|
+| 32		| MS SQL		| Attack on a Microsoft database server										|
+| 40		| SMB			| Attack on a SMB file server											|
+| 50		| VoIP			| Attack on a Voice over IP device										|
 
-Additionally a sensor provider is encouraged to place a certificate request to the CA in order to be authorized.
