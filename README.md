@@ -157,3 +157,6 @@ The following table shows the association between attack type numbers and attack
 | 40		| SMB			| Attack on a SMB file server											|
 | 50		| VoIP			| Attack on a Voice over IP device										|
 
+## Examples ##
+Websites running this server:
+* http://ssi.cased.de
