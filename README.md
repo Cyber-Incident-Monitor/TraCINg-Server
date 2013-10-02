@@ -1,8 +1,44 @@
-server
-======
+TraCINg-Server
+==============
 
-A webserver gathering incidents and visualize them in multiple ways.
+A webserver gathering malware incidents and visualize them in multiple ways.
+
+More detailed TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
+is an project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
+Advanced Security Research Darmstadt) visualizing (mostly random) attacks of malware on the internet.
+Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivore.it/) and
+[HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary honeypots, intrusion detection
+systems (IDS) and similar software.
+
 This product includes GeoLite data created by MaxMind, available from http://maxmind.com/
+
+## Features ##
+This server consists internally of two servers, at first a HTTPS server receiving sensor data
+and at second a HTTP server serving a website to visualize these data.
+Sensors are in this context honeypots or intrusion detection systems (IDS) collecting information about
+(mostly random) attacks of malware. The main focus of this project, 
+
+The HTTP server acts like a simple webserver with static content. Dynamic content is served using
+[Socket.IO](http://socket.io/).
+
+The HTTPS servers purpose is to receive sensor data, to store them in the database and to broadcast it via
+socket.io to every client currently viewing the content of the HTTP server.
+The encryption is mandatory to protect the sensors identy by hiding the content of the data transmission.
+This is necessary to avoid revealing the IP addresses of sensors by observing the transmitted content which
+could lead to blacklisting of sensor IPs in malware.
+Note that sensors are encouraged to hide their IP addresses using for example [TOR](https://www.torproject.org)
+to avoid revealing their IPs by observing the traffic to the HTTPS server with the assumption that every sent
+message to the HTTPS server is most likely sent from a sensor.
+
+In order to ensure genuine sensor data an authentification is used to regocnize trustworthy sensors.
+This authentification is based on a public-key infrastructure (PKI) using a certificate authority (CA) to
+sign the client certificates.
+The authentification is based on sending the client certificate at the TLS handshake and verifying it on the
+server using the CA certificate.
+
+Thus authorizing a sensor requires the sensor to send a certificate request to the CA and to get a valid
+certificate from the CA.
+
 
 ## Requirements ##
 ### Server ###
@@ -24,7 +60,7 @@ Additionally one must download the GeoLiteCity.dat file provided by MaxMind at
 http://dev.maxmind.com/geoip/legacy/geolite/ and place it next to index.js.
 
 ### Website ###
-In order to show th
+In order to use the website one must provide several external libraries 
 
 ## Usage ##
 ### Server ###
@@ -74,4 +110,65 @@ The server comes with a configuration file (config.json) which must be adapted t
   * requestCert: if true the server requests a certificate to check sensors authenticity
   * rejectUnauthorized: if true unauthorized sensors are rejected
 
+## Server Interface ##
+A sensor must stick to the following JSON notation of a data entry to be sent to this server. Note that
+the data entry must be in one line and must not be separated by line breaks as shown here for a better readability:
+```json
+{
+	"sensor": {
+		"name": "sensorName",
+		"type": "sensorType"
+	},
+	"src": {
+		"ip": "sourceIP",
+		"port": "sourcePort"
+	},
+	"dst": {
+		"ip": "destinationIP",
+		"port": "destinationPort"
+	},
+	"type": "incidentTypeID",
+	"log": "incidentLog",
+	"md5sum": "incidentMd5sum",
+	"date": "unixTimestamp"
+}
+```
+This data must be sent via a POST message to the HTTPS server in order to be receipt correctly.
+The sensor may send multiple datasets in one POST message each separated with a "\n".
 
+The following table shows which data fields may be ommited and which are mandatory along with the default
+values set if not provided:
+
+| Field		| Description			| Datatype	| Example		| default value			|
+|---------------|-------------------------------|---------------|-----------------------|-------------------------------|
+| sensor.name	| sensor name			| String	| Sensor1		| "Unknown"			|
+| sensor.type	| sensor type			| String	| Honeypot		| "Unknown"			|
+| src.ip	| attacker IP			| String	| 130.83.151.135	| **mandatory field**		|
+| src.port	| attacker port			| Integer	| 54321			| 0				|
+| dst.ip	| attacked IP (sensor IP)	| String	| 130.83.151.136	| *empty string*		|
+| dst.port	| attacked port	(sensor port)	| Integer	| 80			| 0				|
+| type		| attack type (cf. next table)	| Integer	| 11			| "Unknown"			|
+| log		| attack log			| String	| TCP accept...		| *empty string*		|
+| md5sum	| md5sum of a malware		| String	| 0e65972dce68...	| *empty string*		|
+| date		| date of the attack		| Integer	| 1376645816		| *unix time of the server*	|
+
+The following table shows the association between attack type numbers and attack type definitions:
+
+| Attack Type 	| Attack Name 		| Attack Description												|
+|---------------|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| 0		| Unknown		| The sensor could not determine the attack type								|
+| 10		| Transport Layer	| The attacker connected to an open port, but did not interact with it						|
+| 11		| Portscan		| The attacker tried to connect to a closed port								|
+| 20		| Shellcode Injection	| The attacker successfully used an emulated security issue and would have been able to execute malicious code	|
+| 30		| SQL			| Attack on a database server											|
+| 31		| MySQL			| Attack on a MySQL database server										|
+| 32		| MS SQL		| Attack on a Microsoft database server										|
+| 40		| SMB			| Attack on a SMB file server											|
+| 50		| VoIP			| Attack on a Voice over IP device										|
+
+Note that these attack types are based on the ability of [dionaea](http://dionaea.carnivore.it/) to distinguish between
+these types of attacks.
+
+## Examples ##
+Websites running this server:
+* http://ssi.cased.de
