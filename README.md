@@ -101,3 +101,19 @@ The server comes with a configuration file (config.json) which must be adapted t
   * requestCert: if true the server requests a certificate to check sensors authenticity
   * rejectUnauthorized: if true unauthorized sensors are rejected
 
+## Sensor Protocol ##
+A sensor must stick to the following protocol to send data to this server. Additionally they are encouraged to place
+a certificate request to the CA in order to be authorized.
+
+```javascript
+payload = 
+{
+	sensor: {name, type},
+	src: {ip, port},
+	dst: {ip, port},
+	type: typeid,
+	log: log,
+	md5sum: md5sum,
+	date: unix_timestamp
+}
+```
