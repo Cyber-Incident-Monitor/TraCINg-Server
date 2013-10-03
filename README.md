@@ -1,7 +1,7 @@
 TraCINg-Server
 ==============
 
-A webserver gathering malware incidents and visualize them in multiple ways.
+A webserver gathering malware incidents and visualizing them in multiple ways.
 
 More detailed TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
 is an project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
