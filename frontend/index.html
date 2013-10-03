@@ -221,6 +221,11 @@
 			left: 100px;
 			width: 15px;
 		}
+		
+		/* based on http://stackoverflow.com/questions/16863015/bootstrap-tooltip-working-but-hidden-due-to-z-index*/
+		.tooltip {
+			position: fixed;
+		}
 	</style>
 	
 	<!-- container for bootstrap views -->
@@ -371,24 +376,24 @@
 					
 			  			<!-- include worldmap -->
 			  			<div id="map" class="active center" LeftWinRemove="center" style="position: absolute; width: 80%; height: 80%; display:none;">
-				  			<div class="legend-up icon-arrow-up" rel="tooltip" title="Zoom in map"></div>
-				  			<div class="legend-down icon-arrow-down" rel="tooltip" title="Zoom out map"></div>
-				  			<div class="legend-wasd" rel="tooltip" title="Move map (only if zoomed in)">w/a/s/d</div>
+				  			<div class="legend-up icon-arrow-up" rel="tooltip" title="Zoom in map (keyboard control)"></div>
+				  			<div class="legend-down icon-arrow-down" rel="tooltip" title="Zoom out map (keyboard control)"></div>
+				  			<div class="legend-wasd" rel="tooltip" title="Move the map (keyboard controls, only if zoomed in)">w/a/s/d</div>
 			  			</div>
 			  			
 			  			<!-- include streetmap -->
 			  			<div id="streetmap" class="center" LeftWinRemove="center" style="position: absolute; width: 80%; height: 80%; display:none;">
-			  				<div class="legend-up icon-arrow-up" rel="tooltip" title="Zoom in map"></div>
-			  				<div class="legend-down icon-arrow-down" rel="tooltip" title="Zoom out map"></div>
-			  				<div class="legend-wasd" rel="tooltip" title="Move map">w/a/s/d</div>
+			  				<div class="legend-up icon-arrow-up" rel="tooltip" title="Zoom in map (keyboard control)"></div>
+			  				<div class="legend-down icon-arrow-down" rel="tooltip" title="Zoom out map (keyboard control)"></div>
+			  				<div class="legend-wasd" rel="tooltip" title="Move the map (keyboard controls)">w/a/s/d</div>
 			  			</div>
 			  			
 			  			<!-- include globe -->
 			  			<div id="globe" class="center" LeftWinRemove="center" style="position: absolute; width: 80%; height: 80%; display:none;">
-			  				<div class="legend-toggle" rel="tooltip" title="Toggle heatmap">t</div>
-			  				<div class="legend-up icon-arrow-up" rel="tooltip" title="Zoom in globe"></div>
-			  				<div class="legend-down icon-arrow-down" rel="tooltip" title="Zoom out globe"></div>
-			  				<div class="legend-wasd" rel="tooltip" title="Move globe">w/a/s/d</div>
+			  				<div class="legend-toggle" rel="tooltip" title="Toggle heatmap (keyboard control)">t</div>
+			  				<div class="legend-up icon-arrow-up" rel="tooltip" title="Zoom in globe (keyboard control)"></div>
+			  				<div class="legend-down icon-arrow-down" rel="tooltip" title="Zoom out globe (keyboard control)"></div>
+			  				<div class="legend-wasd" rel="tooltip" title="Move the globe (keyboard controls)">w/a/s/d</div>
 			  			</div>
 			  			
 			  			<!-- include statistics -->
