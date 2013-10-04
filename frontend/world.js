@@ -517,7 +517,7 @@ var world = new function() {
 			var virustotalLink = "https://www.virustotal.com/en/file/" + incident.md5sum + "/analysis/";
 			var popoverContent = "Md5sum of malware hash: " + incident.md5sum + "<br \\> Get more information about this malware from virustotal: <a href=\'" + virustotalLink + "\' target='_blank'>Click here</a> (by doing so you will open a different website)!";
 			var url = "\"./extern/bootstrap/images/glyphicons-halflings.png\"";
-			md5 = "<a class='btn' rel='popover' data-html='true' data-content=\"" + popoverContent + "\" data-animation='false' data-placement='left'><i class='icon-info-sign' style='background-image: url("+ url +");'></i></a><script>$(function() { $('a[rel=popover]').popover({});});</script>";
+			md5 = "<a class='btn' rel='popover' data-html='true' data-content=\"" + popoverContent + "\" data-animation='false' data-placement='left'><i class='icon-info-sign' style='background-image: url("+ url +");'></i></a>";
 		}
 		
 		var authorized = "";
@@ -538,6 +538,7 @@ var world = new function() {
 	 */
 	function makeTableEntry(attackTableEntries) {
 		$("#attackTable").dataTable().fnAddData(attackTableEntries);
+		$(function() { $('a[rel=popover]').popover({});});
 	}
 	this.makeTableEntry = makeTableEntry;
 	
