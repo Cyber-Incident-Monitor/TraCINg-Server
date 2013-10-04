@@ -24,15 +24,6 @@
 	font: bold 18px 'Lucida Console', Monaco, monospace;
 }
 
-/*
- * Date range
- */
-.date-range-selected > .ui-state-active,
-.date-range-selected > .ui-state-default {
-	background: none;
-	background-color: lightsteelblue;
-}
-
 
 /*
  * to make navbar stay at the top (based on http://stackoverflow.com/questions/16521435/make-twitter-bootstrap-navbar-go-to-top-of-page-on-collapse)
