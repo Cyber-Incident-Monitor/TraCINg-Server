@@ -1,7 +1,7 @@
 TraCINg-Server
 ==============
 
-A webserver gathering malware incidents and visualize them in multiple ways.
+A webserver gathering malware incidents and visualizing them in multiple ways.
 
 More detailed TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
 is an project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
@@ -139,7 +139,7 @@ The sensor may send multiple datasets in one POST message each separated with a 
 The following table shows which data fields may be ommited and which are mandatory along with the default
 values set if not provided:
 
-| Field		| Description			| Datatype	| Example		| default value			|
+| Field		| Description			| Datatype	| Example		| Default Value			|
 |---------------|-------------------------------|---------------|-----------------------|-------------------------------|
 | sensor.name	| sensor name			| String	| Sensor1		| "Unknown"			|
 | sensor.type	| sensor type			| String	| Honeypot		| "Unknown"			|

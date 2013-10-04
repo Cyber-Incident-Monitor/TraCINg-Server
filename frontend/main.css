@@ -1,0 +1,119 @@
+/*
+ * Override jVectorMap CSS (adapt it to leaflet)
+ */
+.jvectormap-label {
+	background: white;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	position: absolute;
+	text-align: left;
+	color: black;
+	z-index: 1100;
+}
+.jvectormap-zoomin, .jvectormap-zoomout {
+	color: black;
+	background: white;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+	width: 20px;
+	height: 20px;
+}
+.jvectormap-zoomin {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+}
+.jvectormap-zoomout {
+	top: 38px;
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+}
+
+/*
+ * Date range
+ */
+.date-range-selected > .ui-state-active,
+.date-range-selected > .ui-state-default {
+	background: none;
+	background-color: lightsteelblue;
+}
+
+
+/*
+ * to make navbar stay at the top (based on http://stackoverflow.com/questions/16521435/make-twitter-bootstrap-navbar-go-to-top-of-page-on-collapse)
+ */
+@media (max-width: 980px) { 
+	.navbar {
+		position: absolute;
+		top: 0;
+	}
+}
+
+.requestButtonSize {
+	width: 49%;
+}
+
+/*get incidents becomes two lines at 1847px*/
+@media (max-width: 1680px) { 
+	.requestButtonSize {
+		width: 100%;
+	}
+}
+
+.navbar-offset {
+	margin-top: 40px;
+}
+
+/* 
+ * outline for elements for which help exists in help view
+ * (does not increase the elements size)
+ */
+.help-outline {
+	outline: 3px solid #00AA00;
+}
+/* 
+ * border for elements for which help exists in help view
+ * (for buttons, table div and statistic div because it looks better that way;
+ * does increase the elements size)
+ */
+.help-border {
+	border-style: solid;
+	border-color: #00AA00;
+	border-width: 3px;
+}
+/*
+ * legend for maps to show keyboard control
+ */
+.legend-wasd, .legend-up, .legend-down, .legend-toggle {
+	background-color: #ffffff;
+	z-index: 1;
+	position: absolute;
+	bottom: 5px;
+	padding: 3px;
+	height: 8px;
+	font: bold 10px 'Lucida Console', Monaco, monospace;
+	text-align: center;
+	line-height: 8px; /* same as height for vertical center text alignment */
+	cursor: default;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+}
+
+.legend-wasd {
+	left: 5px;
+	width: 50px;
+}
+
+.legend-up {
+	left: 65px;
+	width: 7px;
+	background-image: url('./extern/bootstrap/glyphicons-halflings.png');
+}
+
+.legend-down {
+	left: 82px;
+	width: 7px;
+	background-image: url('./extern/bootstrap/glyphicons-halflings.png');
+}
+
+.legend-toggle {
+	left: 100px;
+	width: 15px;
+}

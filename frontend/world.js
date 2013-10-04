@@ -391,7 +391,7 @@ var world = new function() {
 	 * State whether there is a marker on the globe
 	 */
 	this.globeHasMarker = function() {
-		if (globeObject != undefined) {
+		if (globeObject != undefined && globeObject.hasMarker != undefined) {
 			return globeObject.hasMarker();
 		}
 		return false;
