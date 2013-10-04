@@ -315,7 +315,8 @@ exports.getLog = function(id, callback){
 		return;
 	}
 	
-	Incident.find({id: id}).only(["log"]).run(function(err, data){
+	// TODO: remove {cache: false} when https://github.com/dresende/node-orm2/issues/350 is resolved and released with a new version of orm
+	Incident.find({id: id} , {cache: false}).only(["log"]).run(function(err, data){
 		if(err){
 			console.log(err);
 			callback(err, null);
