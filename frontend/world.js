@@ -136,7 +136,7 @@ var world = new function() {
 					var country = countryName[cc];
 					return country + " (" + markers + " attacks of " + allMarkers + " total)";
 			};
-			globeObject = new GLOBE.main(container, "extern/globe/", {
+			globeObject = new GLOBE.main(container, "extern/globe/images/", {
 				'modifyMarkerLabel': modifyMarkerLabel,
 				'setCountryLabel': setCountryLabel
 			});
@@ -520,7 +520,7 @@ var world = new function() {
 		if (incident.md5sum && incident.md5sum != '') {
 			var virustotalLink = "https://www.virustotal.com/en/file/" + incident.md5sum + "/analysis/";
 			var popoverContent = "Md5sum of malware hash: " + incident.md5sum + "<br \\> Get more information about this malware from virustotal: <a href=\'" + virustotalLink + "\' target='_blank'>Click here</a> (by doing so you will open a different website)!";
-			var url = "./extern/bootstrap/glyphicons-halflings.png";
+			var url = "\"./extern/bootstrap/images/glyphicons-halflings.png\"";
 			md5 = "<a class='btn' rel='popover' data-html='true' data-content=\"" + popoverContent + "\" data-animation='false' data-placement='left'><i class='icon-info-sign' style='background-image: url("+ url +");'></i></a><script>$(function() { $('a[rel=popover]').popover({});});</script>";
 		}
 		

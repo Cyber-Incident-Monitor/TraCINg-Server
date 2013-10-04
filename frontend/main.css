@@ -104,13 +104,13 @@
 .legend-up {
 	left: 65px;
 	width: 7px;
-	background-image: url('./extern/bootstrap/glyphicons-halflings.png');
+	background-image: url('./extern/bootstrap/images/glyphicons-halflings.png');
 }
 
 .legend-down {
 	left: 82px;
 	width: 7px;
-	background-image: url('./extern/bootstrap/glyphicons-halflings.png');
+	background-image: url('./extern/bootstrap/images/glyphicons-halflings.png');
 }
 
 .legend-toggle {
