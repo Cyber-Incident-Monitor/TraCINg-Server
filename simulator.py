@@ -31,8 +31,7 @@ recursivedict = lambda: defaultdict(recursivedict)
 sensorName = "Simulator"
 sensorType = "Honeypot"
 url = "https://localhost:9999"
-cert = "ssl/simulator/simulator_cert.pem"
-key = "ssl/simulator/simulator_key.pem"
+cert = ("ssl/simulator/simulator_cert.pem", "ssl/simulator/simulator_key.pem")
 
 incidentTypes = {
 	0: "Unknown",
@@ -92,16 +91,17 @@ def getRandomizedEntry():
 	return payload
 
 # Return a randomly set entry to be submitted
-def getRandomlyEntry():
-	mode = random.randint(0, 2)
+def getRandomlyEntry(mode):
+	if mode == None:
+		mode = random.randint(0, 2)
 	# only set mandatory fields (source IP address)
 	if mode == 0:
 		payload = getMandatoryOnlyEntry()
 	# set every possible field
-	if mode == 1:
+	elif mode == 1:
 		payload = getFullEntry()
 	# set randomly fields (but always the mandatory field)
-	if mode == 2:
+	else:
 		payload = getRandomizedEntry()
 	return json.dumps(payload)
 
@@ -143,22 +143,32 @@ def getRandomLog():
 	return "Testlog with random value: " + str(random.randint(0, 2**10)) + "\nand a new line and <b>html</b>"
 
 # Post the payload in json format to the server
-def post(payload_json, url, useCert, verify):
-	if useCert:
-		r = requests.post(url, cert=cert, verify=verify, data=payload_json)
-	else:
-		r = requests.post(url, verify=verify, data=payload_json)
+def post(payload_json, url, cert, useCert, verify):
+	try:
+		if useCert:
+			r = requests.post(url, cert=cert, verify=verify, data=payload_json)
+		else:
+			r = requests.post(url, verify=verify, data=payload_json)
+		return payload_json + "\n --> " + str(r) + "\n>---\n" + r.text + "\n>---\n"
+	except requests.exceptions.SSLError as e:
+		print(e)
+	except IOError as e:
+		print("Either the cert, the key or both of them are not found.")
+	except:
+		 print("Unexpected error:", sys.exc_info()[0])
+		 raise
+	return ""
+	#TODO cert,key not found exception
 	
-	return payload_json + "\n --> " + str(r) + "\n>---\n" + r.text + "\n>---\n"
 
 def main():
 	parser = argparse.ArgumentParser(description = "Simulate...")#TODO
 	parser.add_argument("-s", "--seed", help = "Seed...", type = int)#TODO
 	parser.add_argument("-u", "--url", help = "Sever URL", default = url)
-	parser.add_argument("-c", "--cert", help = "Simulator certificate path", default = cert)
-	parser.add_argument("-k", "--key", help = "Simulator private key path", default = key)
-	parser.add_argument("-n", "--no-cert", help = "Disable certificate usage", default = False)
-	parser.add_argument("-v", "--verify-cert", help = "Disable server certificate verification", default = False)
+	parser.add_argument("-c", "--cert", help = "Simulator certificate path", nargs = 2, default = cert)
+	parser.add_argument("-n", "--no-cert", help = "Disable certificate usage", action = "store_true")
+	parser.add_argument("-v", "--verify-cert", help = "Disable server certificate verification", action = "store_true")
+	parser.add_argument("-m", "--mode", help="Set the mode of entries (full, only mandatory, random)", choices = [0, 1, 2], type = int)
 	args = parser.parse_args()
 	
 	# init seed
@@ -169,11 +179,11 @@ def main():
 	random.seed(seed)
 	
 	# get random entry
-	entry = getRandomlyEntry()
+	entry = getRandomlyEntry(args.mode)
 	print()
 	
 	# post the entry to the sever
-	print(post(entry, args.url, args.no_cert, args.verify_cert))
+	print(post(entry, args.url, args.cert, not args.no_cert, args.verify_cert))
 	
 	# determine new args applying the seed and every used argument
 	newArgs = " ".join(sys.argv[1:])
