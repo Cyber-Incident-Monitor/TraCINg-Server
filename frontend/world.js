@@ -470,11 +470,7 @@ var world = new function() {
 	 * Format the date to a more readable representation
 	 */
 	function formatDate(incident) {
-		var date;
-		if (live)
-			date = new Date();
-		else
-			date = new Date(incident.date);
+		var date = incident.date && new Date(incident.date) || new Date();
 		var day = date.getDate();
 		if (date.getDate() < 10)
 			day = "0" + date.getDate();
