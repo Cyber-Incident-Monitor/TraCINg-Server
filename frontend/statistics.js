@@ -202,8 +202,8 @@ function createChartSeries(series, options){
 
 
 // initial timespan for the detailChart
-var defaultStartDate = Date.UTC(2013, 3, 20); // todo: dynamic
 var defaultEndDate = Date.now();
+var defaultStartDate = defaultEndDate - (2 * 7 * 24 * 60 * 60 * 1000); // two weeks ago
 
 var currentStartDate = defaultStartDate;
 var currentEndDate = defaultEndDate;

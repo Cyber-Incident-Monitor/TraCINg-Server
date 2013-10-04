@@ -213,7 +213,7 @@ function getConditions(filter){
 	return conditions;
 }
 
-function select(callback, filter, only){
+function select(callback, filter, only, order){
 	if(!ready){
 		console.log("db is not ready!");
 		callback({errno: 0, code: "The database is not ready"});
@@ -223,7 +223,12 @@ function select(callback, filter, only){
 	var conditions = filter && getConditions(filter) || {};
 	only = only || [];
 	
-	Incident.find(conditions).only(only).run(function(err, data){
+	var chain = Incident.find(conditions).only(only);
+	
+	if(order)
+		chain = chain.order(order);
+
+	chain.run(function(err, data){
 		if(err){
 			console.log(err);
 			callback(err);
@@ -300,9 +305,7 @@ exports.insert = function(items, callback){
 };
 
 exports.requestAttacks = function(filter, callback){
-	// TODO: order by date
-	
-	select(callback, filter);
+	select(callback, filter, null, "date");
 };
 
 exports.getLog = function(id, callback){
