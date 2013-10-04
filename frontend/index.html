@@ -342,22 +342,26 @@
 		<div class="modal-footer">
 		
 			<!-- strange float behavior but looks best this way -->
-			<div style="float: left; padding-left: 10px; padding-bottom: 5px; padding-right: 10px;">
+			<div style="float: left; padding-left: 10px; padding-bottom: 8px; padding-right: 10px;">
 				<label class="checkbox">
 					<input type="checkbox" id="filterAuthorized" style="display:inline-block;" /> only authorized (enable to show only trusted sensors)
 				</label>
 			</div>	
 			
-			<div style="float: right; padding-left: 10px; padding-right: 10px;">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-				<button class="btn btn-primary" id="selectCountriesFinish">Finish</button>
-			</div>	
+			<div style="float: right; padding-left: 10px; padding-bottom: 3px; padding-right: 10px;">
+				<button class="btn" id="resetFilter">Reset Filter</button>
+			</div>
 		
 			<div style="float: left; padding-left: 10px; padding-right: 10px;">
 				<!-- -->
 				<select id="filterAttackType" multiple size="1"></select>
 				<select id="filterSensorType" multiple size="1"></select>
 				<!-- -->
+			</div>	
+			
+			<div style="float: right; padding-left: 10px; padding-right: 10px;">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+				<button class="btn btn-primary" id="selectCountriesFinish">Finish</button>
 			</div>	
 		</div>
 	</div>
