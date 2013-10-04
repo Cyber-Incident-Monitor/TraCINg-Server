@@ -37,6 +37,9 @@ wget http://jqueryui.com/resources/download/jquery-ui-1.10.3.zip -O $tmp && unzi
 dest=$lib/jquery
 wget -NP $dest https://raw.github.com/ehynds/jquery-ui-multiselect-widget/1.13/src/jquery.multiselect.min.js
 wget -NP $dest https://raw.github.com/ehynds/jquery-ui-multiselect-widget/1.13/jquery.multiselect.css
+# jrange
+wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/jrange/master/css/ui.jrange.css
+wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/jrange/master/js/jquery.ui.jrange.js
 # plugin for datatables use
 wget -NP $dest https://raw.github.com/cowboy/jquery-throttle-debounce/v1.1/jquery.ba-throttle-debounce.min.js
 
