@@ -81,6 +81,7 @@ var filter = new function() {
 		$("#selectStatsCountries1").click(filter.show);
 		$("#selectStatsCountries2").click(filter.show);
 		
+		$("#resetFilter").click(filter.reset);
 		$("#selectCountriesFinish").click(filter.finish);
 	
 
@@ -208,6 +209,14 @@ var filter = new function() {
 		filter.countrySelectionMap.clearSelectedRegions();
 		filter.countrySelection.multiselect("uncheckAll");
 		filter.disableOnRegionSelected = false;
+	};
+	
+	this.reset = function(){
+		filter.clearCountries();
+		filter.attackTypeSelection.multiselect("uncheckAll");
+		filter.sensorTypeSelection.multiselect("uncheckAll");
+		filter.countrySelection.multiselect("uncheckAll");
+		filter.authorizedCheckbox.prop("checked", false);
 	};
 
 	this.clickJVectorMap = function(e, cc, isSelected, selectedRegions){

@@ -117,3 +117,8 @@
 	left: 100px;
 	width: 15px;
 }
+
+/* tooltip correct "z-index", based on http://stackoverflow.com/questions/16863015/bootstrap-tooltip-working-but-hidden-due-to-z-index*/
+.tooltip {
+	position: fixed;
+}

@@ -39,6 +39,7 @@ var streetmap = function(container) {
 	 * lat/lng if desired; enabling this also makes the Layer attribute noWrap less useful)
 	 */
 	//stmap.setMaxBounds(new L.LatLngBounds(new L.LatLng(-90, -190), new L.LatLng(90, 190)));
+	stmap.setMaxBounds(new L.LatLngBounds(new L.LatLng(-190, -290), new L.LatLng(190, 290)));
 	
 	// start the map
 	// first argument: lat/lng; second argument: zoom (the smaller the farther away)
