@@ -22,7 +22,7 @@ echo
 genKeyCert() {
 	echo "Creating private key and CA signed certificate of $1"
 	openssl genrsa -out ${1}_key.pem
-	openssl req -new -key ${1}_key.pem -subj "/O=TraCINg $1/" -out $1.csr
+	openssl req -new -key ${1}_key.pem -subj "/O=TraCINg/OU=Test/CN=$1" -out $1.csr
 	openssl x509 -req -days 3 -in $1.csr -CA ca_cert.pem -CAkey ca_key.pem -CAcreateserial -out ${1}_cert.pem
 	rm $1.csr
 	echo
@@ -30,6 +30,11 @@ genKeyCert() {
 
 # Server private key and certificate
 genKeyCert server
+
+# Simulator private key and certificate
+genKeyCert simulator
+mkdir -p simulator
+mv simulator_* simulator
 
 # Client private key and certificate
 for ((i=0;i<$clients;i++))
