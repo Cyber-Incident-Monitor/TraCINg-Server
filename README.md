@@ -81,7 +81,6 @@ The server comes with a configuration file (config.json) which must be adapted t
 ```json
 {
 	"db": "sqlite:///tmp/test.sqlite?debug=true",
-	"geoip": "GeoLiteCity.dat",
 	"server": {
         	"httpPort": 8888,
         	"httpsPort": 9999,
