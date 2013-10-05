@@ -92,11 +92,11 @@ wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gu
 # datatables library
 dest=$lib/datatables
 mkdir -p $dest
-wget https://datatables.net/releases/DataTables-1.9.4.zip -O $tmp && unzip -jod $dest $tmp *dataTables.css *dataTables.min.js
+wget https://www.datatables.net/releases/DataTables-1.9.4.zip -O $tmp && unzip -jod $dest $tmp *dataTables.css *dataTables.min.js
 dest=$lib/datatables/images
 mkdir -p $dest
 unzip -jod $dest $tmp *.png && rm $tmp
 # additions for combination with bootstrap
 dest=$lib/datatables
-wget -NP $dest http://datatables.net/media/blog/bootstrap_2/DT_bootstrap.js
-wget -NP $dest http://datatables.net/media/blog/bootstrap_2/DT_bootstrap.css
+wget -NP $dest https://www.datatables.net/media/blog/bootstrap_2/DT_bootstrap.js
+wget -NP $dest https://www.datatables.net/media/blog/bootstrap_2/DT_bootstrap.css
