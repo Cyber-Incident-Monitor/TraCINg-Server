@@ -41,8 +41,6 @@ var world = new function() {
 	var requestPaused = ".";				// text to show in speed information if loading is currently paused
 	var attackNumberHash = {};				// hashmap containing the number of attacks per Lat/Lng position
 	var controller = new Controller();
-	var maxTableEntries = 500;
-	var tableEntries = 0;
 	
 	/**
 	 * Toggle whether the key control is enabled or not
@@ -138,7 +136,7 @@ var world = new function() {
 					var country = countryName[cc];
 					return country + " (" + markers + " attacks of " + allMarkers + " total)";
 			};
-			globeObject = new GLOBE.main(container, "extern/globe/", {
+			globeObject = new GLOBE.main(container, "extern/globe/images/", {
 				'modifyMarkerLabel': modifyMarkerLabel,
 				'setCountryLabel': setCountryLabel
 			});
@@ -203,12 +201,12 @@ var world = new function() {
 		} else {
 			// mark all incidents at once if timeout interval is 0
 			if (timeout == 0) {
-				var table = "";
+				var tableEntries = [];
 				for (var i = key; i < data.length; i++) {
 					world.markIncident(data[i], live, true);
-					table += generateTableEntry(data[i]);
+					tableEntries.push(generateTableEntry(data[i]));
 				}
-				makeTableEntry(table);
+				makeTableEntry(tableEntries);
 			}
 			
 			if (data.length > 0) {
@@ -420,8 +418,7 @@ var world = new function() {
 	 */
 	this.resetTable = function() {
 		// reset table
-		$("#attackEntries").text('');
-		tableEntries = 0;
+		$("#attackTable").dataTable().fnClearTable();
 	}
 	
 	/**
@@ -473,11 +470,7 @@ var world = new function() {
 	 * Format the date to a more readable representation
 	 */
 	function formatDate(incident) {
-		var date;
-		if (live)
-			date = new Date();
-		else
-			date = new Date(incident.date);
+		var date = incident.date && new Date(incident.date) || new Date();
 		var day = date.getDate();
 		if (date.getDate() < 10)
 			day = "0" + date.getDate();
@@ -499,17 +492,6 @@ var world = new function() {
 	 * Generate one table entry and return it as a string to be inserted
 	 */
 	function generateTableEntry(incident) {
-		tableEntries++;
-		if (tableEntries == maxTableEntries) {
-			var onClick = "world.resetTable();";
-			var here = "<a style='cursor: pointer;' onclick='javascript:" + onClick + ";'>here</a>";
-			var warning = "WARNING - no more entries available, click " + here + " to clear the table view"
-			return "<tr><td colspan='13' style='text-align:center;color:red;'>" + warning + "</td></tr>";
-		}
-		if (tableEntries > maxTableEntries) {
-			return "";
-		}
-		
 		// set city and country names
 		if (incident.src.city == undefined)
 			incident.src.city = "";
@@ -534,8 +516,8 @@ var world = new function() {
 		if (incident.md5sum && incident.md5sum != '') {
 			var virustotalLink = "https://www.virustotal.com/en/file/" + incident.md5sum + "/analysis/";
 			var popoverContent = "Md5sum of malware hash: " + incident.md5sum + "<br \\> Get more information about this malware from virustotal: <a href=\'" + virustotalLink + "\' target='_blank'>Click here</a> (by doing so you will open a different website)!";
-			var url = "./extern/bootstrap/glyphicons-halflings.png";
-			md5 = "<a class='btn' rel='popover' data-html='true' data-content=\"" + popoverContent + "\" data-animation='false' data-placement='left'><i class='icon-info-sign' style='background-image: url("+ url +");'></i></a><script>$(function() { $('a[rel=popover]').popover({});});</script>";
+			var url = "\"./extern/bootstrap/images/glyphicons-halflings.png\"";
+			md5 = "<a class='btn' rel='popover' data-html='true' data-content=\"" + popoverContent + "\" data-animation='false' data-placement='left'><i class='icon-info-sign' style='background-image: url("+ url +");'></i></a>";
 		}
 		
 		var authorized = "";
@@ -546,18 +528,29 @@ var world = new function() {
 		}
 
 		//make entry
-		var htmlcode = '<tr><td>' + incident.sensortype + '</td><td>' + incident.sensorname + '</td><td><span title="' + typeDescr + '">' + type + '</span></td><td>' + dateFormat + '</td><td>' + incident.src.country + '</td><td>' + incident.src.city + '</td><td>' + incident.src.port + '</td><td>' + incident.dst.country + '</td><td>' + incident.dst.city + '</td><td>' + incident.dst.port + '</td><td>' + authorized + '</td><td>' + md5 + '</td><td>' + log + '</td></tr>';
-		return htmlcode;
+		var attackTableEntry = [incident.sensortype, incident.sensorname, '<span title="' + typeDescr + '">' + type + '</span>', dateFormat, incident.src.country, incident.src.city, incident.src.port, incident.dst.country, incident.dst.city, incident.dst.port, authorized, md5, log];
+		return attackTableEntry;
 	}
 	this.generateTableEntry = generateTableEntry;
 	
 	/**
 	 * Make table entries (includes time formatting)
 	 */
-	function makeTableEntry(htmlcode) {
-		$('#attackEntries').append(htmlcode);
+	function makeTableEntry(attackTableEntries) {
+		$("#attackTable").dataTable().fnAddData(attackTableEntries);
+		makePopovers();
 	}
 	this.makeTableEntry = makeTableEntry;
+	
+	
+	/**
+	 * Make popovers in the table
+	 */
+	function makePopovers() {
+		console.log("makePopovers");
+		$('a[rel=popover]').popover({});
+	}
+	this.makePopovers = makePopovers;
 	
 	/**
 	 * animate new marker using jquery animate()
@@ -597,3 +590,36 @@ function showLog(id){
 		$('#showLog').modal();
 	});
 }
+
+$(function(){
+	$("#attackTable").dataTable({
+		"aaSorting": [[ 3, "desc" ]], // order by date, new items first
+		"sScrollY": "100%",
+		"fnDrawCallback": function() {
+			world.makePopovers();
+		}
+	});
+
+	setTimeout(function() {
+		updateAttackTableHeight();
+		$("#attackTable").dataTable().fnDraw();
+	}, 10);
+});
+
+function updateAttackTableHeight() {
+	var attackTable = $("#attackTable").dataTable();
+
+	var height = $(window).height();
+
+	height -= $("#table .dataTables_scrollBody").offset().top;
+	height -= $("#table .dataTables_scroll + div").height();
+
+	console.log("attackTableHeight: " + height);
+
+	$("#table .dataTables_scrollBody").css({"max-height": height});
+}
+
+$(window).resize($.throttle(250,function() {
+	updateAttackTableHeight();
+	$("#attackTable").dataTable().fnDraw();
+}));

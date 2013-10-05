@@ -88,7 +88,7 @@ function process (response, postData, authorized, sensor, io) {
 						type: parsedData.type || 0,
 						log: parsedData.log || null,
 						md5sum: parsedData.md5sum || null,
-						date: parsedData.date && parsedData.date*1000 || new Date(), // now
+						date: parsedData.date && new Date(parsedData.date*1000) || new Date(), // now
 						authorized: authorized,
 					};
 	

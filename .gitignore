@@ -1,2 +1,4 @@
+frontend/extern
+ssl
 *.pem
 *.dat
