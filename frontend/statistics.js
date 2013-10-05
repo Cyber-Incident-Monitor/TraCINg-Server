@@ -102,16 +102,20 @@ function updateChart(options){
 * data: array of series to be added
 */
 function setChartData(chart, data){
-	// remove old series
-	// todo: das müsste auch besser gehen...
-	for(var i = chart.series.length - 1; i >= 0; i--){
-		var old = chart.series[i];
-		old.remove(false); // do not redraw
+	var oldLenght = chart.series.length;
+
+	// add new series
+	for(var i = 0; i < data.length; i++){
+		chart.addSeries(data[i], false); // false: do not redraw
 	}
 	
-	for(var k in data){
-		chart.addSeries(data[k], false); // false: do not redraw
+	chart.redraw();
+
+	// remove old series
+	for(var count = 0; count < oldLenght; count++){
+		chart.series[0].remove(false); // do not redraw
 	}
+	
 
 	chart.hideLoading();
 	chart.redraw();
