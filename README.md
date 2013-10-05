@@ -25,7 +25,7 @@ socket.io to every client currently viewing the content of the HTTP server.
 The encryption is mandatory to protect the sensors identity by hiding the content of the data transmission.
 This is necessary to avoid revealing the IP addresses of sensors by observing the transmitted content which
 could lead to blacklisting of sensor IPs in malware.
-Note that sensors are encouraged to hide their IP addresses using for example [TOR](https://www.torproject.org)
+Note that sensors are encouraged to hide their IP addresses using for example [Tor](https://www.torproject.org)
 to avoid revealing their IPs in an observation of the traffic to the HTTPS server with the assumption that every sent
 message to the HTTPS server is most likely sent from a sensor.
 
