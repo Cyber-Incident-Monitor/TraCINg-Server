@@ -79,11 +79,11 @@ function process (response, postData, authorized, sensor, io) {
 						sensortype: sensor.type || parsedData.sensor && parsedData.sensor.type || "Unknown",
 						src: {
 							ip: parsedData.src.ip,
-							port: parsedData.src && parsedData.src.port || 0,
+							port: parsedData.src && parsedData.src.port && (parsedData.src.port > 0) && (parsedData.src.port < 65535) && parsedData.src.port || 0,
 						},
 						dst: {
 							ip: parsedData.dst && parsedData.dst.ip || null,
-							port: parsedData.dst && parsedData.dst.port || 0,
+							port: parsedData.dst && parsedData.dst.port && (parsedData.dst.port > 0) && (parsedData.dst.port < 65535) && parsedData.dst.port || 0,
 						},
 						type: parsedData.type || 0,
 						log: parsedData.log || null,
