@@ -10,8 +10,8 @@ Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivo
 [HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary honeypots, intrusion detection
 systems (IDS) and similar software.
 
-This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.
-This Project was inspired by but is not based on [the Honeymap Project](http://map.honeycloud.net/).
+This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.  
+This project was inspired by but is not based on the [Honeynet Project](http://map.honeynet.org/).
 
 ## Features ##
 This server consists internally of two servers: A HTTPS server receiving sensor data
@@ -61,22 +61,22 @@ Additionally the following [npm](https://npmjs.org/) packages are required to be
 For example using npm: `npm install socket.io sqlite3 orm node-static geoip validator`
 
 ### Website Libraries ###
-To run the website one must provide several external libraries in the **frontend/extern** folder:
-* [bootstrap](http://getbootstrap.com/2.3.2/)
+To run the website one must provide several external libraries (at least the javascript and css files)
+in the **frontend/extern** folder:
+* [bootstrap](http://getbootstrap.com/2.3.2/) (including images)
 * [jVecorMap](http://jvectormap.com/), [world map](http://jvectormap.com/maps/world/world/)
-* [leaflet](http://leafletjs.com/)
-* [three.js](http://threejs.org/)
-* [globe.js](https://github.com/Cyber-Incident-Monitor/globe.js)
+* [leaflet](http://leafletjs.com/) (including images)
+* [globe.js](https://github.com/Cyber-Incident-Monitor/globe.js) (including images), requires [three.js](http://threejs.org/)
 * [highcharts](http://www.highcharts.com/)
 * [jQuery](http://jquery.com/)
-* [jQuery UI](http://jqueryui.com/)
+* [jQuery UI](http://jqueryui.com/) (including images)
 * [jquery-ui-multiselect-widget](http://www.erichynds.com/blog/jquery-ui-multiselect-widget)
 * [jrange](https://github.com/Cyber-Incident-Monitor/jrange)
 * [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
-* [datatables](https://datatables.net/), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
+* [datatables](https://datatables.net/) (including images), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
 
-One may use the provided fetch.sh script to download these libraries along with the MaxMind GeoLiteCity database
-described in the next section.
+Instead of installing all these libraries manually we encourage you to use the provided **fetch.sh** script to download
+them along with the MaxMind GeoLiteCity database described in the next section.
 
 ### MaxMind GeoLiteCity Database ###
 One must download the **GeoLiteCity.dat** file provided by MaxMind at
@@ -95,11 +95,14 @@ Hence one must provide the following files:
 
 Note that the certificates and private keys must be provided in the pem format.
 
-To test the functionality one may use the provided genKeyCert.sh script which generates a ca, server,
+To test the functionality one may use the provided **genKeyCert.sh** script which generates CA, server,
 simulator and serveral client certificate/private key pairs in the **ssl** folder. Note that these keys
 are weak (only 1024bit long and not encrypted with a passphrase) and are valid for just three days.
 
 ## Usage ##
+To start the server execute `node index.js`. If the servers private key is encrypted you must unlock the
+key by entering the passphrase.
+
 ### Configuration file ###
 The server comes with a configuration file (config.json) which must be adapted to the users preferences:
 ```json
