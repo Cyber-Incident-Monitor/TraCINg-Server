@@ -11,7 +11,6 @@ Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivo
 systems (IDS) and similar software.
 
 This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.
-This Project was inspired by but is not based on [the Honeymap Project](http://map.honeycloud.net/).
 
 ## Features ##
 This server consists internally of two servers: A HTTPS server receiving sensor data
@@ -39,15 +38,18 @@ server using the CA certificate.
 Thus authorizing a sensor requires the sensor to send a certificate request to the CA and to get a valid
 certificate from the CA.
 
-
 ## Requirements ##
+### System Packages ###
 In order to run the server one must install the following packages (preferably with
 the systems package management system):
 * [openssl](http://www.openssl.org/)
 * [sqlite3](http://www.sqlite.org/)
 * [node.js](http://nodejs.org/)
 
-along with the following [npm](https://npmjs.org/) packages:
+For example using [pacman](https://wiki.archlinux.org/index.php/pacman): `pacman -S openssl sqlite3 nodejs`
+
+### Node Packages ###
+Additionally the following [npm](https://npmjs.org/) packages are required to be installed:
 * [socket.io](https://npmjs.org/package/socket.io)
 * [sqlite3](https://npmjs.org/package/sqlite3)
 * [orm](https://npmjs.org/package/orm)
@@ -55,28 +57,19 @@ along with the following [npm](https://npmjs.org/) packages:
 * [geoip](https://npmjs.org/package/geoip)
 * [validator](https://npmjs.org/package/validator)
 
-To run the website one must provide several external libraries:
+For example using npm: `npm install socket.io sqlite3 orm node-static geoip validator`
 
-* [bootstrap](http://getbootstrap.com/2.3.2/)
-* [jVecorMap](http://jvectormap.com/), [world map](http://jvectormap.com/maps/world/world/)
-* [leaflet](http://leafletjs.com/)
-* [three.js](http://threejs.org/)
-* [globe.js](https://github.com/Cyber-Incident-Monitor/globe.js)
-* [highcharts](http://www.highcharts.com/)
-* [jQuery](http://jquery.com/)
-* [jQuery UI](http://jqueryui.com/)
-* [jquery-ui-multiselect-widget](http://www.erichynds.com/blog/jquery-ui-multiselect-widget)
-* [jrange](https://github.com/Cyber-Incident-Monitor/jrange)
-* [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
-* [datatables](https://datatables.net/), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
+### MaxMind GeoLiteCity Database ###
+One must download the **GeoLiteCity.dat** file provided by MaxMind at
+http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as **index.js**.
 
-Additionally one must download the GeoLiteCity.dat file provided by MaxMind at
-http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as index.js.
+### Website Libraries ###
+To run the website one must provide several external libraries in the **frontend/extern** folder:
+* lib1
+* lib2
 
-## Usage ##
-### Server ###
-#### Certificates ####
-To run the https server part one must provide at least a self signed server certificate
+### Certificates ###
+To run the HTTPS server part one must provide at least a self signed server certificate
 along with the corresponding private key.
 To use the server to its full extent (with sensor authentification) one must prepare a
 public-key infrastructure (PKI) containing a certificate authority (CA) which signs the
@@ -88,7 +81,17 @@ Hence one must provide the following files:
 
 Note that the certificates and private keys must be provided in the pem format.
 
-#### Configuration file ####
+### Scripts ###
+One may use the fetch.sh script to download the **GeoLiteCity.dat** database and the libraries required
+to run the website.
+The installation of the system and node packages must be done individually.
+
+To test the functionality one may use the provided genKeyCert.sh script which generates a ca, server,
+simulator and serveral client certificate/private key pairs in the **ssl** folder. Note that these keys
+are weak (only 1024bit long and not encrypted with a passphrase) and are valid for just three days.
+
+## Usage ##
+### Configuration file ###
 The server comes with a configuration file (config.json) which must be adapted to the users preferences:
 ```json
 {
