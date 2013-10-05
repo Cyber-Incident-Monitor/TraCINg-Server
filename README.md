@@ -75,8 +75,9 @@ in the **frontend/extern** folder:
 * [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
 * [datatables](https://datatables.net/) (including images), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
 
-Instead of installing all these libraries manually we encourage you to use the provided **fetch.sh** script to download
-them along with the MaxMind GeoLiteCity database described in the next section.
+Instead of installing all these libraries manually we encourage you to use the provided
+[fetch.sh](https://raw.github.com/Cyber-Incident-Monitor/TraCINg-Server/master/fetch.sh)
+script to download them along with the MaxMind GeoLiteCity database described in the next section.
 
 ### MaxMind GeoLiteCity Database ###
 One must download the **GeoLiteCity.dat** file provided by MaxMind at
@@ -95,9 +96,11 @@ Hence one must provide the following files:
 
 Note that the certificates and private keys must be provided in the pem format.
 
-To test the functionality one may use the provided **genKeyCert.sh** script which generates CA, server,
-simulator and serveral client certificate/private key pairs in the **ssl** folder. Note that these keys
-are weak (only 1024bit long and not encrypted with a passphrase) and are valid for just three days.
+To test the functionality one may use the provided
+[genKeyCert.sh](https://raw.github.com/Cyber-Incident-Monitor/TraCINg-Server/master/genKeyCert.sh)
+script which generates CA, server, simulator and serveral client certificate/private key pairs in
+the **ssl** folder. Note that these keys are weak (only 1024 bit long and not encrypted with a passphrase)
+and are valid for just three days.
 
 ## Usage ##
 To start the server execute `node index.js`. If the servers private key is encrypted you must unlock the
