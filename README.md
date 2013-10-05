@@ -40,7 +40,6 @@ certificate from the CA.
 
 
 ## Requirements ##
-### Server ###
 In order to run the server one must install the following packages (preferably with
 the systems package management system):
 * [openssl](http://www.openssl.org/)
@@ -55,11 +54,12 @@ along with the following [npm](https://npmjs.org/) packages:
 * [geoip](https://npmjs.org/package/geoip)
 * [validator](https://npmjs.org/package/validator)
 
+To run the website one must provide several external libraries:
+* lib1
+* lib2
+
 Additionally one must download the GeoLiteCity.dat file provided by MaxMind at
 http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as index.js.
-
-### Website ###
-In order to run the website one must provide several external libraries.
 
 ## Usage ##
 ### Server ###
