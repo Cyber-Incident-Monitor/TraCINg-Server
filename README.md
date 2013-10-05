@@ -11,6 +11,7 @@ Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivo
 systems (IDS) and similar software.
 
 This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.
+This Project was inspired by but is not based on [the Honeymap Project](http://map.honeycloud.net/).
 
 ## Features ##
 This server consists internally of two servers: A HTTPS server receiving sensor data
@@ -65,8 +66,18 @@ http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as 
 
 ### Website Libraries ###
 To run the website one must provide several external libraries in the **frontend/extern** folder:
-* lib1
-* lib2
+* [bootstrap](http://getbootstrap.com/2.3.2/)
+* [jVecorMap](http://jvectormap.com/), [world map](http://jvectormap.com/maps/world/world/)
+* [leaflet](http://leafletjs.com/)
+* [three.js](http://threejs.org/)
+* [globe.js](https://github.com/Cyber-Incident-Monitor/globe.js)
+* [highcharts](http://www.highcharts.com/)
+* [jQuery](http://jquery.com/)
+* [jQuery UI](http://jqueryui.com/)
+* [jquery-ui-multiselect-widget](http://www.erichynds.com/blog/jquery-ui-multiselect-widget)
+* [jrange](https://github.com/Cyber-Incident-Monitor/jrange)
+* [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
+* [datatables](https://datatables.net/), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2) 
 
 ### Certificates ###
 To run the HTTPS server part one must provide at least a self signed server certificate
