@@ -27,12 +27,11 @@ import datetime
 from collections import defaultdict
 recursivedict = lambda: defaultdict(recursivedict)
 
-# constants
+# constants and defaults
 sensorName = "Simulator"
 sensorType = "Honeypot"
 url = "https://localhost:9999"
 cert = ("ssl/simulator/simulator_cert.pem", "ssl/simulator/simulator_key.pem")
-
 incidentTypes = {
 	0: "Unknown",
 	10: "Transport Layer",
@@ -43,18 +42,35 @@ incidentTypes = {
 	32: "MS SQL",
 	40: "SMB",
 	50: "VoIP",
+	60: "Invalid"		# invalid test case
+}
+predefined = {
+	"sensor": {
+		"name": "Predefined Sensor Name",
+		"type": "Predefined Sensor Type",
+	},
+	"src": {
+		"ip": "130.83.58.211",
+		"port": 80,
+	},
+	"dst": {
+		"ip": "192.30.252.130",
+		"port": 22,
+	},
+	"type": 0,
+	"log": "Predefined Log",
+	"md5sum": "7867de13bf22a7f3e3559044053e33e7",
+	"date": 1,
 }
 
 # Return a field only containing the mandatory field
 def getMandatoryOnlyEntry():
-	print("Only mandatory fields")
 	payload = recursivedict()
 	payload["src"]["ip"] = getRandomIP()
 	return payload
 
 # Return a randomly generated entry using every fields possible
-def getFullEntry():
-	print("Full entry")
+def getFullEntry(chooseRandomly):
 	return {
 		"sensor": {
 			"name": sensorName,
@@ -71,12 +87,11 @@ def getFullEntry():
 		"type": getRandomIncident(),
 		"log": getRandomLog(),
 		"md5sum": getRandomMd5sum(),
-		"date": getRandomTime(),
+		"date": getTime(chooseRandomly),
 	}
 
 # Return a randomly generated entry (mandatory field always set)
-def getRandomizedEntry():
-	print("Randomized entry")
+def getRandomizedEntry(chooseRandomly):
 	payload = recursivedict()
 	setRandomly(payload, "sensor", "name", sensorName)
 	setRandomly(payload, "sensor", "type", sensorType)
@@ -87,11 +102,11 @@ def getRandomizedEntry():
 	setRandomly(payload, "type", None, getRandomIncident())
 	setRandomly(payload, "log", None, getRandomLog())
 	setRandomly(payload, "md5sum", None, getRandomMd5sum())
-	setRandomly(payload, "date", None, getRandomTime())
+	setRandomly(payload, "date", None, getTime(chooseRandomly))
 	return payload
 
 # Return a randomly set entry to be submitted
-def getRandomlyEntry(mode):
+def getRandomlyEntry(mode, chooseRandomly):
 	if mode == None:
 		mode = random.randint(0, 2)
 	# only set mandatory fields (source IP address)
@@ -99,17 +114,18 @@ def getRandomlyEntry(mode):
 		payload = getMandatoryOnlyEntry()
 	# set every possible field
 	elif mode == 1:
-		payload = getFullEntry()
+		payload = getFullEntry(chooseRandomly)
 	# set randomly fields (but always the mandatory field)
 	else:
-		payload = getRandomizedEntry()
-	return json.dumps(payload)
+		payload = getRandomizedEntry(chooseRandomly)
+	return payload
 
-# Return 32bit unix time
-def getRandomTime():
-	time = random.randint(0, 2**31 - 1)
-	print("Date:", datetime.datetime.utcfromtimestamp(time), "(" + str(time) + ")")
-	return time
+# Return either the current or a random time (32bit unix time)
+def getTime(chooseRandomly):
+	if chooseRandomly:
+		return random.randint(0, 2**31 - 1)
+	else:
+		return int(time.time())
 
 # Set a value with a probability of 0.5
 def setRandomly(target, key1, key2, content):
@@ -130,9 +146,7 @@ def getRandomIP():
 
 # Return a random incident chosen from incidentTypes dictionary
 def getRandomIncident():
-	incident = random.choice(list(incidentTypes.keys()))
-	print("Incident type:", incidentTypes[incident])
-	return incident
+	return random.choice(list(incidentTypes.keys()))
 
 # Return a random md5sum
 def getRandomMd5sum():
@@ -158,17 +172,34 @@ def post(payload_json, url, cert, useCert, verify):
 		 print("Unexpected error:", sys.exc_info()[0])
 		 raise
 	return ""
-	#TODO cert,key not found exception
 	
+# define a positive integer type
+def positiveInt(string):
+	value = int(string)
+	if value < 0:
+		msg = string + " is not a positive integer"
+		raise argparse.ArgumentTypeError(msg)
+	return value
 
 def main():
-	parser = argparse.ArgumentParser(description = "Simulate...")#TODO
-	parser.add_argument("-s", "--seed", help = "Seed...", type = int)#TODO
-	parser.add_argument("-u", "--url", help = "Sever URL", default = url)
-	parser.add_argument("-c", "--cert", help = "Simulator certificate path", nargs = 2, default = cert)
-	parser.add_argument("-n", "--no-cert", help = "Disable certificate usage", action = "store_true")
-	parser.add_argument("-v", "--verify-cert", help = "Disable server certificate verification", action = "store_true")
-	parser.add_argument("-m", "--mode", help="Set the mode of entries (full, only mandatory, random)", choices = [0, 1, 2], type = int)
+	# define arguments and their behaviour
+	parser = argparse.ArgumentParser(description = "Simulate incident reports (single, multiple or in logs) and send them via HTTPS POST to a designated server.")
+	parser.add_argument("-s", "--seed", help = "set the SEED to initialize the pseudorandom number generator", type = positiveInt)
+	parser.add_argument("-m", "--mode", help = "determine which fields are sent (0: only mandatory fields, 1: every possible field, 2: at least the mandatory fields)", choices = [0, 1, 2], type = int)
+	parser.add_argument("-n", "--number", help = "set the NUMBER of incident reports (or logs) to be sent (by default 1)", type = positiveInt, default = 1)
+	parser.add_argument("-i", "--interval", help = "set the MIN and MAX time in ms between single incident reports (by default 1000 and 1000)", nargs = 2, metavar = ("MIN", "MAX"), type = positiveInt, default = [1000, 1000])
+	parser.add_argument("-v", "--verbose", help = "show more details while sending incident reports", action = "store_true")
+	parser.add_argument("-u", "--url", help = "set the server URL to sent the incident report(s) (by default " + url + ")", default = url)
+	certFormated = str(cert).replace("(", "").replace(",", " and")
+	parser.add_argument("-c", "--cert", help = "set the CERT and private KEY path to be used (by default " + certFormated, nargs = 2, metavar = ("CERT", "KEY"), default = cert)
+	parser.add_argument("-nc", "--no-cert", help = "disable certificate usage", action = "store_true")
+	parser.add_argument("-vc", "--verify-cert", help = "disable server certificate verification", action = "store_true")
+	parser.add_argument("-lf", "--log-format", help = "send multiple incident reports in one log (by default 3 to 10 reports per log)", action = "store_true")
+	parser.add_argument("-ls", "--log-size", help = "set the MIN and MAX number of incident reports per log (by default MIN = 3 and MAX = 10)", nargs = 2, metavar = ("MIN", "MAX"), type = positiveInt, default = [3, 10])
+	parser.add_argument("-r", "--random-time", help = "set the timestamp at random instead of using the current time", action = "store_true")
+	group = parser.add_mutually_exclusive_group()
+	group.add_argument("-p", "--predefined", help = "send a predefined incident report (cf. the source of this program for details about the predefined report)", action = "store_true")
+	group.add_argument("-cu", "--custom", help = "apply a custom incident REPORT in JSON format, for example: '{\"src\":{\"ip\":\"192.30.252.130\"}}' (put the incident report into single quotes to prevent the shell from removing the double quotes)", metavar = "REPORT", type = json.loads)
 	args = parser.parse_args()
 	
 	# init seed
@@ -178,17 +209,59 @@ def main():
 		seed = random.randint(0, sys.maxsize)
 	random.seed(seed)
 	
-	# get random entry
-	entry = getRandomlyEntry(args.mode)
-	print()
+	# send incidents
+	if args.number > 0:
+		for i in range(0, args.number):
+			# send multiple entries in one log separated by \n
+			if args.custom is not None:
+				entry = args.custom
+			elif args.predefined:
+				entry = predefined
+			elif args.log_format:
+				entry = ""
+				size = random.randint(args.log_size[0], args.log_size[1])
+				for j in range(0, size):
+					entry += getRandomlyEntry(args.mode, args.random_time) + "\n"
+			else:
+				# send a single entry
+				entry = getRandomlyEntry(args.mode, args.random_time)
+			# post the entry
+			result = post(json.dumps(entry), args.url, args.cert, not args.no_cert, args.verify_cert)
+			# print server reply
+			if args.verbose:
+				print("-----------------------------------------------")
+				print("Attack No.:", i + 1, "of", args.number)
+				try:
+					print("Date (UTC):", datetime.datetime.utcfromtimestamp(entry["date"]))
+				except:
+					print("Date is not supplied")
+				try:
+					print("Incident type:", incidentTypes[entry["type"]])
+				except:
+					print("Incident type is not supplied")
+				print("Server response:\n")
+				print(result)
+			else:
+				print("Attack No.:", i + 1, "of", args.number)
+			# avoid sleep in the last loop
+			if i < args.number - 1:
+				time.sleep(random.randint(args.interval[0], args.interval[1])/1000)
 	
-	# post the entry to the sever
-	print(post(entry, args.url, args.cert, not args.no_cert, args.verify_cert))
+	if args.verbose:
+		print("-----------------------------------------------")
 	
-	# determine new args applying the seed and every used argument
+	# determine new args applying the seed if missing to the previous args
 	newArgs = " ".join(sys.argv[1:])
 	if not args.seed:
-		newArgs += "--seed " + str(seed)
+		newArgs += " --seed " + str(seed)
+	
+	# add single quotes to custom json entry argument
+	# (prevent the shell removing the required double quotes)
+	if args.custom is not None:
+		trimmedEntry = str(entry).replace(" ", "").replace("'", '"')
+		newArgs = newArgs.replace(trimmedEntry, "'" + trimmedEntry + "'")
+	
+	# print used arguments with an additional example command
 	print("To reproduce this simulation use the following argument(s): ")
 	print("\t" + newArgs)
 	print("For example using the following command: ")
