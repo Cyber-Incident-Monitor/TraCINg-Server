@@ -60,10 +60,6 @@ Additionally the following [npm](https://npmjs.org/) packages are required to be
 
 For example using npm: `npm install socket.io sqlite3 orm node-static geoip validator`
 
-### MaxMind GeoLiteCity Database ###
-One must download the **GeoLiteCity.dat** file provided by MaxMind at
-http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as **index.js**.
-
 ### Website Libraries ###
 To run the website one must provide several external libraries in the **frontend/extern** folder:
 * [bootstrap](http://getbootstrap.com/2.3.2/)
@@ -77,7 +73,14 @@ To run the website one must provide several external libraries in the **frontend
 * [jquery-ui-multiselect-widget](http://www.erichynds.com/blog/jquery-ui-multiselect-widget)
 * [jrange](https://github.com/Cyber-Incident-Monitor/jrange)
 * [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
-* [datatables](https://datatables.net/), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2) 
+* [datatables](https://datatables.net/), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
+
+One may use the provided fetch.sh script to download these libraries along with the MaxMind GeoLiteCity database
+described in the next section.
+
+### MaxMind GeoLiteCity Database ###
+One must download the **GeoLiteCity.dat** file provided by MaxMind at
+http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as **index.js**.
 
 ### Certificates ###
 To run the HTTPS server part one must provide at least a self signed server certificate
@@ -91,11 +94,6 @@ Hence one must provide the following files:
 * CA certificate
 
 Note that the certificates and private keys must be provided in the pem format.
-
-### Scripts ###
-One may use the fetch.sh script to download the **GeoLiteCity.dat** database and the libraries required
-to run the website.
-The installation of the system and node packages must be done individually.
 
 To test the functionality one may use the provided genKeyCert.sh script which generates a ca, server,
 simulator and serveral client certificate/private key pairs in the **ssl** folder. Note that these keys
