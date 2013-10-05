@@ -538,9 +538,19 @@ var world = new function() {
 	 */
 	function makeTableEntry(attackTableEntries) {
 		$("#attackTable").dataTable().fnAddData(attackTableEntries);
-		$(function() { $('a[rel=popover]').popover({});});
+		makePopovers();
 	}
 	this.makeTableEntry = makeTableEntry;
+	
+	
+	/**
+	 * Make popovers in the table
+	 */
+	function makePopovers() {
+		console.log("makePopovers");
+		$('a[rel=popover]').popover({});
+	}
+	this.makePopovers = makePopovers;
 	
 	/**
 	 * animate new marker using jquery animate()
@@ -585,8 +595,9 @@ $(function(){
 	$("#attackTable").dataTable({
 		"aaSorting": [[ 3, "desc" ]], // order by date, new items first
 		"sScrollY": "100%",
-		//"bScrollCollapse": true,
-		//"sPaginationType": "bootstrap",
+		"fnDrawCallback": function() {
+			world.makePopovers();
+		}
 	});
 
 	setTimeout(function() {

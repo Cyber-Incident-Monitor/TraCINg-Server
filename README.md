@@ -3,34 +3,33 @@ TraCINg-Server
 
 A webserver gathering malware incidents and visualizing them in multiple ways.
 
-More detailed TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
-is an project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
-Advanced Security Research Darmstadt) visualizing (mostly random) attacks of malware on the internet.
+TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
+is a project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
+Advanced Security Research Darmstadt) visualizing attacks of malware on the internet.
 Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivore.it/) and
 [HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary honeypots, intrusion detection
 systems (IDS) and similar software.
 
-This product includes GeoLite data created by MaxMind, available from http://maxmind.com/
+This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.
 
 ## Features ##
-This server consists internally of two servers, at first a HTTPS server receiving sensor data
-and at second a HTTP server serving a website to visualize these data.
-Sensors are in this context honeypots or intrusion detection systems (IDS) collecting information about
-(mostly random) attacks of malware. The main focus of this project, 
+This server consists internally of two servers: A HTTPS server receiving sensor data
+and a HTTP server serving a website to visualize this data.
+Sensors are honeypots (or intrusion detection systems) collecting information about attacks of malware.
 
 The HTTP server acts like a simple webserver with static content. Dynamic content is served using
 [Socket.IO](http://socket.io/).
 
 The HTTPS servers purpose is to receive sensor data, to store them in the database and to broadcast it via
 socket.io to every client currently viewing the content of the HTTP server.
-The encryption is mandatory to protect the sensors identy by hiding the content of the data transmission.
+The encryption is mandatory to protect the sensors identity by hiding the content of the data transmission.
 This is necessary to avoid revealing the IP addresses of sensors by observing the transmitted content which
 could lead to blacklisting of sensor IPs in malware.
 Note that sensors are encouraged to hide their IP addresses using for example [TOR](https://www.torproject.org)
-to avoid revealing their IPs by observing the traffic to the HTTPS server with the assumption that every sent
+to avoid revealing their IPs in an observation of the traffic to the HTTPS server with the assumption that every sent
 message to the HTTPS server is most likely sent from a sensor.
 
-In order to ensure genuine sensor data an authentification is used to regocnize trustworthy sensors.
+In order to receive genuine sensor data an authentification is used to recognize trustworthy sensors.
 This authentification is based on a public-key infrastructure (PKI) using a certificate authority (CA) to
 sign the client certificates.
 The authentification is based on sending the client certificate at the TLS handshake and verifying it on the
@@ -57,10 +56,10 @@ along with the following [npm](https://npmjs.org/) packages:
 * [validator](https://npmjs.org/package/validator)
 
 Additionally one must download the GeoLiteCity.dat file provided by MaxMind at
-http://dev.maxmind.com/geoip/legacy/geolite/ and place it next to index.js.
+http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as index.js.
 
 ### Website ###
-In order to use the website one must provide several external libraries 
+In order to run the website one must provide several external libraries.
 
 ## Usage ##
 ### Server ###
@@ -69,7 +68,7 @@ To run the https server part one must provide at least a self signed server cert
 along with the corresponding private key.
 To use the server to its full extent (with sensor authentification) one must prepare a
 public-key infrastructure (PKI) containing a certificate authority (CA) which signs the
-servers and sensors certificates.
+server and sensor certificates.
 Hence one must provide the following files:
 * server certificate (signed by the CA)
 * server private key
@@ -97,7 +96,7 @@ The server comes with a configuration file (config.json) which must be adapted t
 	}
 }
 ```
-* db: the path to the database storing incident data captured by sensors
+* db: the path to the database storing attack data monitored by sensors
 * geoip: the path to the GeoLiteCity.dat file provided by MaxMind
 * server:
   * httpPort: the port of the HTTP server (serving the website)
@@ -111,7 +110,7 @@ The server comes with a configuration file (config.json) which must be adapted t
   * rejectUnauthorized: if true unauthorized sensors are rejected
 
 ## Server Interface ##
-A sensor must stick to the following JSON notation of a data entry to be sent to this server. Note that
+A sensor must stick to the following JSON notation of a data entry to be able to send data to this server. Note that
 the data entry must be in one line and must not be separated by line breaks as shown here for a better readability:
 ```json
 {
@@ -133,11 +132,11 @@ the data entry must be in one line and must not be separated by line breaks as s
 	"date": "unixTimestamp"
 }
 ```
-This data must be sent via a POST message to the HTTPS server in order to be receipt correctly.
+This data must be sent via a POST message to the HTTPS server in order to be received correctly.
 The sensor may send multiple datasets in one POST message each separated with a "\n".
 
-The following table shows which data fields may be ommited and which are mandatory along with the default
-values set if not provided:
+The following table shows which data fields may be omitted and which are mandatory along with the default
+values:
 
 | Field		| Description			| Datatype	| Example		| Default Value			|
 |---------------|-------------------------------|---------------|-----------------------|-------------------------------|
