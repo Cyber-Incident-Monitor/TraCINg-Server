@@ -6,9 +6,10 @@ A webserver gathering malware incidents and visualizing them in multiple ways.
 TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
 is a project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
 Advanced Security Research Darmstadt) visualizing attacks of malware on the internet.
-Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivore.it/) and
-[HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary honeypots, intrusion detection
-systems (IDS) and similar software.
+Attacks are observed using honeypots especially the honeypot [dionaea](http://dionaea.carnivore.it/)
+in conjunction with [jsonfeeds](https://github.com/Cyber-Incident-Monitor/jsonfeeds) and
+the honeypot [HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary
+honeypots, intrusion detection systems (IDS) and similar software.
 
 This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.  
 This project was inspired by but is not based on the [Honeynet Project](http://map.honeynet.org/).
@@ -104,7 +105,10 @@ and are valid for just three days.
 
 ## Usage ##
 To start the server execute `node index.js`. If the servers private key is encrypted you must unlock the
-key by entering the passphrase.
+key by entering the passphrase.  
+One may use the [simulator](https://github.com/Cyber-Incident-Monitor/TraCINg-Server/blob/master/simulator.py)
+(requires python 3 along with the [Requests library](http://docs.python-requests.org/en/latest/)) to simulate
+an sensor thus testing the functionality of the server.
 
 ### Configuration file ###
 The server comes with a configuration file (config.json) which must be adapted to the users preferences:
