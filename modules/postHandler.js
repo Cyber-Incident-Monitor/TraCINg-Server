@@ -110,7 +110,6 @@ function process (response, postData, authorized, sensor, io) {
 					// add to database
 					//if (ipa != null && ipd != null) {
 					if (ipa) {
-						// insert calls insertCallback which calls socket.emit
 						items.push(data);
 					}
 					else {
@@ -142,14 +141,26 @@ function process (response, postData, authorized, sensor, io) {
 						response.writeHead(200, {"Content-Type": "text/plain"});
 					}
 					
+					if(!err){
+						var forwarded = 0;
+						var now = new Date().getTime();
+						var minDate = now - 60*60*1000;
+						var maxDate = now + 60*60*1000;
+
+						for(var i = 0; i < items.length; i++){
+							var date = items[i].date.getTime();
+							// only send items that are not older than an hour and not more than an hour in the future
+							if(date >= minDate && date < maxDate){
+								io.sockets.emit("markIncident", items[i]);	// TODO send as one packet / one array
+								forwarded++;
+							}
+						}
+
+						debug.add("forwarded " + forwarded + " item(s) live to the webclients");
+					}
+					
 					response.write(debug.get());
 					response.end();
-					
-					if(!err){
-						for(var i = 0; i < items.length; i++){
-							io.sockets.emit("markIncident", items[i]);	// TODO send as one packet / one array
-						}
-					}
 				});
 			}
 			else{
