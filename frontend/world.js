@@ -504,6 +504,10 @@ var world = new function() {
 			incident.dst.country = "";
 		if (incident.dst.city == undefined)
 			incident.dst.city = "";
+		if (incident.src.port == 0)
+			incident.src.port = "";
+		if (incident.dst.port == 0)
+			incident.dst.port = "";
 		
 		//format date
 		dateFormat = formatDate(incident);
