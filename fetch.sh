@@ -19,21 +19,20 @@
 
 read -p "Would you like to install highcharts (only non-commercial use allowed without a license) [y/N]?:" answer
 
-# define tmp zip file
-tmp=tmp.zip
-
 # define library path
 lib=./frontend/extern
 
 # jquery libraries
 dest=$lib/jquery
 mkdir -p $dest
-wget http://code.jquery.com/jquery-2.0.3.min.js -O $dest/jquery.min.js
+wget -NP $dest http://code.jquery.com/jquery-2.0.3.min.js
+cp $dest/jquery-2.0.3.min.js $dest/jquery.min.js
 wget -NP $dest http://code.jquery.com/ui/1.10.3/jquery-ui.js
 wget -NP $dest http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css
 dest=$lib/jquery/images
 mkdir -p $dest
-wget http://jqueryui.com/resources/download/jquery-ui-1.10.3.zip -O $tmp && unzip -jod $dest $tmp *icons*.png *bg*.png && rm $tmp
+wget -NP $dest http://jqueryui.com/resources/download/jquery-ui-1.10.3.zip
+unzip -jod $dest $dest/jquery-ui-1.10.3.zip *icons*.png *bg*.png
 dest=$lib/jquery
 wget -NP $dest https://raw.github.com/ehynds/jquery-ui-multiselect-widget/1.13/src/jquery.multiselect.min.js
 wget -NP $dest https://raw.github.com/ehynds/jquery-ui-multiselect-widget/1.13/jquery.multiselect.css
@@ -46,10 +45,10 @@ wget -NP $dest https://raw.github.com/cowboy/jquery-throttle-debounce/v1.1/jquer
 # bootstrap 2.3.2 library
 dest=$lib/bootstrap
 mkdir -p $dest
-wget http://getbootstrap.com/2.3.2/assets/bootstrap.zip -O $tmp && unzip -jod $dest $tmp *.min.*
-dest=$lib/bootstrap/images
-mkdir -p $dest
-unzip -jod $dest $tmp *.png* && rm $tmp
+wget -NP $dest http://getbootstrap.com/2.3.2/assets/bootstrap.zip
+unzip -jod $dest $dest/bootstrap.zip *.min.*
+mkdir -p $dest/images
+unzip -jod $dest/images $dest/bootstrap.zip *.png*
 
 # highcharts library
 if [ $answer == "yes" ] || [ $answer == "y" ]; then
@@ -62,14 +61,16 @@ fi
 dest=$lib/jvectormap
 mkdir -p $dest
 wget -NP $dest http://jvectormap.com/js/jquery-jvectormap-world-mill-en.js
-wget http://jvectormap.com/binary/jquery-jvectormap-1.2.2.zip -O $tmp && unzip -jod $dest $tmp *1.2.2* && rm $tmp
+wget -NP $dest http://jvectormap.com/binary/jquery-jvectormap-1.2.2.zip
+unzip -jod $dest $dest/jquery-jvectormap-1.2.2.zip *1.2.2*
 mv $dest/jquery-jvectormap-*.min.js $dest/jquery-jvectormap.min.js
 mv $dest/jquery-jvectormap-*.css $dest/jquery-jvectormap.css
 
 # leaflet library
 dest=$lib/leaflet
 mkdir -p $dest
-wget http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip -O $tmp && unzip -od $dest $tmp leaflet.js leaflet.css images/* && rm $tmp
+wget -NP $dest http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip
+unzip -od $dest $dest/leaflet-0.6.4.zip leaflet.js leaflet.css images/*
 
 # globe.js library along with three.js library
 dest=$lib/globe
@@ -89,15 +90,15 @@ dest=$lib/globe
 wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/globe.js/master/loading.gif
 
 # MaxMind GeoLiteCity.dat
-wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gunzip -f GeoLiteCity.dat.gz
+wget -N http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gunzip -c GeoLiteCity.dat.gz >GeoLiteCity.dat
 
 # datatables library
 dest=$lib/datatables
 mkdir -p $dest
-wget https://www.datatables.net/releases/DataTables-1.9.4.zip -O $tmp && unzip -jod $dest $tmp *dataTables.css *dataTables.min.js
-dest=$lib/datatables/images
-mkdir -p $dest
-unzip -jod $dest $tmp *.png && rm $tmp
+wget -NP $dest https://www.datatables.net/releases/DataTables-1.9.4.zip
+unzip -jod $dest $dest/DataTables-1.9.4.zip *dataTables.css *dataTables.min.js
+mkdir -p $dest/images
+unzip -jod $dest/images $dest/DataTables-1.9.4.zip *.png
 # additions for combination with bootstrap
 dest=$lib/datatables
 wget -NP $dest https://www.datatables.net/media/blog/bootstrap_2/DT_bootstrap.js
