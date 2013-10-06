@@ -16,35 +16,33 @@
  * limitations under the License.
  */
 
-// based on http://switch2osm.org/using-tiles/getting-started-with-leaflet/
 var streetmap = function(container) {
 
-	var stmap = new L.Map(container);	// set up the map
-	stmap.keyboard.disable();			// deactivate native keybindings
+	var stmap = new L.Map(container);	// create a map
 	var maxKey = 500;					// maximum amount of markers
 	var markerArray = [maxKey];			// array containing all markers
 	var uniqueKey = 0;					// unique key for marker id
 	var holdTime = 100;					// time in ms until a label disappears
 	var incidents = 0;					// total sum of incidents
 	
-	// create the tile layer with correct attribution
-	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-	var osmAttrib='Map data © OpenStreetMap contributors';
-	// initStreetMap
-	var osm = new L.TileLayer(osmUrl, {attribution: osmAttrib, noWrap: true, minZoom: 1});
+	// set standard (start) view (first argument: lat/lng; second argument: zoom (the smaller the farther away))
+	stmap.setView([35, 0], 3, {animate: false});
+	// deactivate native keybindings
+	stmap.keyboard.disable();
+	
+	// add layer
+	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+		attribution: "&copy; <a href='http://osm.org/copyright'>OpenStreetMap</a> contributors",
+		noWrap: true,
+		minZoom: 1
+	}).addTo(stmap);
 
 	/* set a bounding box for the map which is as large as the world and does not allow movement beyond
 	 * (this is sort of buggy and does not work with "setView" when the setView zoom level is the same as
 	 * the max zoom through maxBound, thus if this shall be used, set the zoom level to 4 and adjust
 	 * lat/lng if desired; enabling this also makes the Layer attribute noWrap less useful)
 	 */
-	//stmap.setMaxBounds(new L.LatLngBounds(new L.LatLng(-90, -190), new L.LatLng(90, 190)));
-	stmap.setMaxBounds(new L.LatLngBounds(new L.LatLng(-190, -290), new L.LatLng(190, 290)));
-	
-	// start the map
-	// first argument: lat/lng; second argument: zoom (the smaller the farther away)
-	stmap.setView(new L.LatLng(35, 0), 3, {animate: false});
-	stmap.addLayer(osm);
+	stmap.setMaxBounds(new L.LatLngBounds([-190, -290], [190, 290]));
 	
 	/*
 	 * mark incident on the map
@@ -57,17 +55,11 @@ var streetmap = function(container) {
 		var size = 500; // 500 meter circle
 		var latLng = new L.LatLng(ll[0], ll[1]);
 		var circle = L.circle(latLng, size, { color: color, fillColor: color, fillOpacity: 0.5 });
-		
-		//markerArray.splice(uniqueKey, 0, circle); FIXME remove me
 		circle.addTo(stmap);
 		
 		// create a popup that will not receive focus on creation (i.e. no autoPan)
 		var popup = new L.Popup({autoPan: false}).setContent(label);
 		circle.bindPopup(popup);
-		
-		// show more information in popup on click
-		//var clickedMarker;
-		//circle.on("click", function(e) {clickedMarker = this; this._popup.setContent(advLabel); this.openPopup();});
 		
 		// show popup on mousehover, hide popup on mouseout
 		var stmapHoverTimer;
