@@ -44,9 +44,21 @@ var fields = {
 
 exports.fields = fields;
 
-exports.translate = function (serieField, currentSerie){
+exports.translate = function(serieField, currentSerie) {
     if(fields[serieField.name].hasOwnProperty(currentSerie))
         return fields[serieField.name][currentSerie];
     else
         return fields[serieField.name][0];
 };
+
+function getKeys(obj) {
+	var keys = [];
+
+	for(var key in obj) {
+		keys.push(key);
+	}
+
+	return keys;
+}
+
+exports.validTypes = getKeys(fields.type);
