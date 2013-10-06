@@ -85,6 +85,8 @@ wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/globe.js/master/tex
 wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/globe.js/master/textures/countries_colored.png
 wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/globe.js/master/textures/gradient.png
 wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/globe.js/master/textures/heat.png
+dest=$lib/globe
+wget -NP $dest https://raw.github.com/Cyber-Incident-Monitor/globe.js/master/loading.gif
 
 # MaxMind GeoLiteCity.dat
 wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz && gunzip -f GeoLiteCity.dat.gz
