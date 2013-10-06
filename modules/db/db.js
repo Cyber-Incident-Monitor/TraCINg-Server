@@ -203,7 +203,29 @@ function getConditions(filter){
 	}
 
 	if(filter.hasOwnProperty("types")){
-		conditions["type"] = filter["types"];
+		var types = [];
+		for(var i = 0; i < filter["types"].length; i++) {
+			types.push(parseInt(filter["types"][i], 10));
+		}
+		
+		conditions["type"] = types;
+
+		/*
+		TODO: wait for https://github.com/dresende/node-sql-query/issues/24
+		if(types.indexOf(0) != -1){
+			var not_in = [];
+			for(var i = 0; i < fields.validTypes.length; i++) {
+				var validType = fields.validTypes[i];
+				if(filter["types"].indexOf(validType) == -1)
+					not_in.push(validType);
+			}
+
+			conditions["type"] = orm.not_in(not_in);
+		}
+		else{
+			conditions["type"] = types;
+		}
+		*/
 	}
 	
 	if(filter.hasOwnProperty("sensors")){
