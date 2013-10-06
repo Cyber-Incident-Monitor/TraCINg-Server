@@ -46,23 +46,25 @@ The website visualizes attacks caused by malware on the internet in the later de
 can be shown live if in **Live-View** or retrieved by a database query if in **Database-View**. Additional features
 are an about and help screen informing and guiding respectively the user.
 
-#### 2D Country Map ####
-The country map shows a map only containing country borders.
+#### 2D Country View ####
+The country view shows a map only containing country borders.
 It can be moved and zoomed either with the mouse or the keyboard.  
 Attacks are shown as a marker in the country where the attack originated. Hovering the markers shows information
 about this specific attack and how many attacks where originated from the same place.  
 Additionally countries are colored in a red tone depending on the ratio of markers in that country.
 
-#### 2D Street Map ####
-The street map behaves much like the 2D Country Map but omits coloring of the countries and shows a
+#### 2D Map View ####
+The map view behaves much like the country view but omits coloring of the countries and shows a
 more detailed map using [OpenStreetMap](http://www.openstreetmap.org/) map material.
 
 #### 3D Globe ####
-The globe behaves much like the 2D Map in the 3D space with the enhancement of adding a heatmap-like
-view of the markers.
+The globe behaves much like the country view in the 3D space with the enhancement of adding a heatmap-like
+view of the markers which can be toggled with the keyboard.
 
 #### Table View ####
-The table view shows a sort- and searchable table containing information about each attack.
+The table view shows a sort- and searchable table containing information about each attack. If the sensor
+was able to retrieve a malware its md5sum is given in addition with a link to [VirusTotal](https://www.virustotal.com/)
+showing more details about this specific malware.
 
 #### Statistics ####
 The statistics shows either the number of attacks per country over a specific time span or the number of
