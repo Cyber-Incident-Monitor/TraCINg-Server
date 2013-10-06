@@ -6,15 +6,17 @@ A webserver gathering malware incidents and visualizing them in multiple ways.
 TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
 is a project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
 Advanced Security Research Darmstadt) visualizing attacks of malware on the internet.
-Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivore.it/) and
-[HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary honeypots, intrusion detection
-systems (IDS) and similar software.
+Attacks are observed using honeypots especially the honeypot [dionaea](http://dionaea.carnivore.it/)
+in conjunction with [jsonfeeds](https://github.com/Cyber-Incident-Monitor/jsonfeeds) and
+the honeypot [HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary
+honeypots, intrusion detection systems (IDS) and similar software.
 
 This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.  
 This project was inspired by but is not based on the [Honeynet Project](http://map.honeynet.org/).
 
 ## Features ##
-This server consists internally of two servers: A HTTPS server receiving sensor data
+### Backend ###
+This backend consists internally of two servers: A HTTPS server receiving sensor data
 and a HTTP server serving a website to visualize this data.
 Sensors are honeypots (or intrusion detection systems) collecting information about attacks of malware.
 
@@ -38,6 +40,40 @@ server using the CA certificate.
 
 Thus authorizing a sensor requires the sensor to send a certificate request to the CA and to get a valid
 certificate from the CA.
+
+### Frontend ###
+The website visualizes attacks caused by malware on the internet in the later described five ways. Incidents
+can be shown live if in **Live-View** or retrieved by a database query if in **Database-View**. Additional features
+are an about and help screen informing and guiding respectively the user.
+
+#### 2D Country View ####
+The country view shows a map only containing country borders.
+It can be moved and zoomed either with the mouse or the keyboard.  
+Attacks are shown as a marker in the country where the attack originated. Hovering the markers shows information
+about this specific attack and how many attacks where originated from the same place.  
+Additionally countries are colored in a red tone depending on the ratio of markers in that country.
+
+#### 2D Map View ####
+The map view behaves much like the country view but omits coloring of the countries and shows a
+more detailed map using [OpenStreetMap](http://www.openstreetmap.org/) map material.
+
+#### 3D Globe ####
+The globe behaves much like the country view in the 3D space with the enhancement of adding a heatmap-like
+view of the markers which can be toggled with the keyboard.
+
+#### Table View ####
+The table view shows a sort- and searchable table containing information about each attack. If the sensor
+was able to retrieve a malware its md5sum is given in addition with a link to [VirusTotal](https://www.virustotal.com/)
+showing more details about this specific malware.
+
+#### Statistics ####
+The statistics shows either the number of attacks per country over a specific time span or the number of
+attack types in a specific time span. The data can be filtered by several ways:
+* show only authorized sensors data
+* select countries
+* select attack types
+* select sensor types
+Note that statistics can only be applied to data querried from the database.
 
 ## Requirements ##
 ### System Packages ###
@@ -75,8 +111,9 @@ in the **frontend/extern** folder:
 * [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
 * [datatables](https://datatables.net/) (including images), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
 
-Instead of installing all these libraries manually we encourage you to use the provided **fetch.sh** script to download
-them along with the MaxMind GeoLiteCity database described in the next section.
+Instead of installing all these libraries manually we encourage you to use the provided
+[fetch.sh](https://raw.github.com/Cyber-Incident-Monitor/TraCINg-Server/master/fetch.sh)
+script to download them along with the MaxMind GeoLiteCity database described in the next section.
 
 ### MaxMind GeoLiteCity Database ###
 One must download the **GeoLiteCity.dat** file provided by MaxMind at
@@ -95,13 +132,18 @@ Hence one must provide the following files:
 
 Note that the certificates and private keys must be provided in the pem format.
 
-To test the functionality one may use the provided **genKeyCert.sh** script which generates CA, server,
-simulator and serveral client certificate/private key pairs in the **ssl** folder. Note that these keys
-are weak (only 1024bit long and not encrypted with a passphrase) and are valid for just three days.
+To test the functionality one may use the provided
+[genKeyCert.sh](https://raw.github.com/Cyber-Incident-Monitor/TraCINg-Server/master/genKeyCert.sh)
+script which generates CA, server, simulator and serveral client certificate/private key pairs in
+the **ssl** folder. Note that these keys are weak (only 1024 bit long and not encrypted with a passphrase)
+and are valid for just three days.
 
 ## Usage ##
 To start the server execute `node index.js`. If the servers private key is encrypted you must unlock the
-key by entering the passphrase.
+key by entering the passphrase.  
+One may use the [simulator](https://github.com/Cyber-Incident-Monitor/TraCINg-Server/blob/master/simulator.py)
+(requires python 3 along with the [Requests library](http://docs.python-requests.org/en/latest/)) to simulate
+an sensor thus testing the functionality of the server.
 
 ### Configuration file ###
 The server comes with a configuration file (config.json) which must be adapted to the users preferences:

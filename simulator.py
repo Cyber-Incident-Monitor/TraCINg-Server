@@ -265,7 +265,7 @@ def main():
 	print("To reproduce this simulation use the following argument(s): ")
 	print("\t" + newArgs)
 	print("For example using the following command: ")
-	print("\t python " + sys.argv[0], newArgs)
+	print("\t python3 " + sys.argv[0], newArgs)
 
 if __name__ == '__main__':
 	main()
