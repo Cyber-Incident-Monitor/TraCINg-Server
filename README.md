@@ -15,7 +15,8 @@ This product includes GeoLite data created by MaxMind, available from http://max
 This project was inspired by but is not based on the [Honeynet Project](http://map.honeynet.org/).
 
 ## Features ##
-This server consists internally of two servers: A HTTPS server receiving sensor data
+### Backend ###
+This backend consists internally of two servers: A HTTPS server receiving sensor data
 and a HTTP server serving a website to visualize this data.
 Sensors are honeypots (or intrusion detection systems) collecting information about attacks of malware.
 
@@ -39,6 +40,38 @@ server using the CA certificate.
 
 Thus authorizing a sensor requires the sensor to send a certificate request to the CA and to get a valid
 certificate from the CA.
+
+### Frontend ###
+The website visualizes attacks caused by malware on the internet in the later described five ways. Incidents
+can be shown live if in **Live-View** or retrieved by a database query if in **Database-View**. Additional features
+are an about and help screen informing and guiding respectively the user.
+
+#### 2D Country Map ####
+The country map shows a map only containing country borders.
+It can be moved and zoomed either with the mouse or the keyboard.  
+Attacks are shown as a marker in the country where the attack originated. Hovering the markers shows information
+about this specific attack and how many attacks where originated from the same place.  
+Additionally countries are colored in a red tone depending on the ratio of markers in that country.
+
+#### 2D Street Map ####
+The street map behaves much like the 2D Country Map but omits coloring of the countries and shows a
+more detailed map using [OpenStreetMap](http://www.openstreetmap.org/) map material.
+
+#### 3D Globe ####
+The globe behaves much like the 2D Map in the 3D space with the enhancement of adding a heatmap-like
+view of the markers.
+
+#### Table View ####
+The table view shows a sort- and searchable table containing information about each attack.
+
+#### Statistics ####
+The statistics shows either the number of attacks per country over a specific time span or the number of
+attack types in a specific time span. The data can be filtered by several ways:
+* show only authorized sensors data
+* select countries
+* select attack types
+* select sensor types
+Note that statistics can only be applied to data querried from the database.
 
 ## Requirements ##
 ### System Packages ###
