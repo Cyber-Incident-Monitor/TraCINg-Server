@@ -240,6 +240,11 @@ var world = new function() {
 			// reset progress bar
 			$('.bar').css('width', 0);
 		}
+		// reset play button to pause if necessary
+		if ($('#playButton i').hasClass('icon-play')) {
+			$('#playButton i').addClass('icon-pause');
+			$('#playButton i').removeClass('icon-play');
+		}
 		// reset "Get Incidents" button (stop showing "Loading..."), disable control buttons
 		$('#getIncidents').text('Get Incidents');
 		$('#getIncidents').removeClass("disabled");
