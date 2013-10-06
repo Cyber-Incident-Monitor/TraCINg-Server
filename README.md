@@ -6,14 +6,17 @@ A webserver gathering malware incidents and visualizing them in multiple ways.
 TraCINg (TUD Cyber Incident moNitor with TUD as an abbreviation of Technische Universität Darmstadt)
 is a project proposed by Emmanouil Vasilomanolakis from [CASED](http://www.cased.de/) (Center for
 Advanced Security Research Darmstadt) visualizing attacks of malware on the internet.
-Attacks are observed using honeypots especially [dionaea](http://dionaea.carnivore.it/) and
-[HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary honeypots, intrusion detection
-systems (IDS) and similar software.
+Attacks are observed using honeypots especially the honeypot [dionaea](http://dionaea.carnivore.it/)
+in conjunction with [jsonfeeds](https://github.com/Cyber-Incident-Monitor/jsonfeeds) and
+the honeypot [HosTaGe](https://github.com/mip-it/hostage) but can be extended to use arbitrary
+honeypots, intrusion detection systems (IDS) and similar software.
 
-This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.
+This product includes GeoLite data created by MaxMind, available from http://maxmind.com/.  
+This project was inspired by but is not based on the [Honeynet Project](http://map.honeynet.org/).
 
 ## Features ##
-This server consists internally of two servers: A HTTPS server receiving sensor data
+### Backend ###
+The backend consists internally of two servers: A HTTPS server receiving sensor data
 and a HTTP server serving a website to visualize this data.
 Sensors are honeypots (or intrusion detection systems) collecting information about attacks of malware.
 
@@ -38,16 +41,54 @@ server using the CA certificate.
 Thus authorizing a sensor requires the sensor to send a certificate request to the CA and to get a valid
 certificate from the CA.
 
+### Frontend ###
+The website visualizes malware attacks from the internet in five different ways (described below). Incidents
+will be shown live if in **Live-View** or can be retrieved by a database query if in **Database-View**.
+Additional features are an about and help screen to guide and inform the user.
+
+#### 2D Country View ####
+The country view shows a map which contains only country borders.
+It can be moved and zoomed both with the mouse or the keyboard.  
+Attacks are shown as a marker in the country where the attackers IP was mapped to. Hovering a marker shows
+information about this specific attack and how many attacks originated from the same place.  
+Additionally countries are colored in a red shade depending on the ratio of markers in that country.
+
+#### 2D Map View ####
+The map view behaves much like the country view but omits coloring of the countries. Instead it shows a
+more detailed map using [OpenStreetMap](http://www.openstreetmap.org/) map material.
+
+#### 3D Globe ####
+The globe behaves much like the country view in the 3D space with the enhancement of adding a heatmap-like
+view of the markers which can be toggled with the keyboard.
+
+#### Table View ####
+The table view shows a sort- and searchable table containing detailed information about each attack. If the sensor
+was able to copy the malware the malwares md5sum is given in addition to a link to
+[VirusTotal](https://www.virustotal.com/) where one can get more detailed information about this specific malware.
+It is also possible to have a look into logs which dionaea creates to record every attack.
+
+#### Statistics ####
+The statistic shows either the number of attacks per country or per type in a specific time span.
+The data can be filtered in several ways (the same is possible in **Database-View**):
+* show only authorized sensors data
+* select countries
+* select attack types
+* select sensor types
+Note that statistics can only be applied to data queried from the database (though the statistic itself is independent
+from **Live-View** and **Database-View**).
 
 ## Requirements ##
-### Server ###
+### System Packages ###
 In order to run the server one must install the following packages (preferably with
 the systems package management system):
 * [openssl](http://www.openssl.org/)
 * [sqlite3](http://www.sqlite.org/)
 * [node.js](http://nodejs.org/)
 
-along with the following [npm](https://npmjs.org/) packages:
+For example using [pacman](https://wiki.archlinux.org/index.php/pacman): `pacman -S openssl sqlite3 nodejs`
+
+### Node Packages ###
+Additionally the following [npm](https://npmjs.org/) packages are required to be installed:
 * [socket.io](https://npmjs.org/package/socket.io)
 * [sqlite3](https://npmjs.org/package/sqlite3)
 * [orm](https://npmjs.org/package/orm)
@@ -55,16 +96,33 @@ along with the following [npm](https://npmjs.org/) packages:
 * [geoip](https://npmjs.org/package/geoip)
 * [validator](https://npmjs.org/package/validator)
 
-Additionally one must download the GeoLiteCity.dat file provided by MaxMind at
-http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as index.js.
+For example using npm locally: `npm install socket.io sqlite3 orm node-static geoip validator`
 
-### Website ###
-In order to run the website one must provide several external libraries.
+### Website Libraries ###
+To run the website one must provide several external libraries (at least the javascript and css files)
+in the **frontend/extern** folder:
+* [bootstrap](http://getbootstrap.com/2.3.2/) (including images)
+* [jVecorMap](http://jvectormap.com/), [world map](http://jvectormap.com/maps/world/world/)
+* [leaflet](http://leafletjs.com/) (including images)
+* [globe.js](https://github.com/Cyber-Incident-Monitor/globe.js) (including images), requires [three.js](http://threejs.org/)
+* [highcharts](http://www.highcharts.com/)
+* [jQuery](http://jquery.com/)
+* [jQuery UI](http://jqueryui.com/) (including images)
+* [jquery-ui-multiselect-widget](http://www.erichynds.com/blog/jquery-ui-multiselect-widget)
+* [jrange](https://github.com/Cyber-Incident-Monitor/jrange)
+* [jquery-throttle-debounce](http://benalman.com/projects/jquery-throttle-debounce-plugin/)
+* [datatables](https://datatables.net/) (including images), [datatables bootstrap plugin](http://datatables.net/blog/Twitter_Bootstrap_2)
 
-## Usage ##
-### Server ###
-#### Certificates ####
-To run the https server part one must provide at least a self signed server certificate
+Instead of installing all these libraries manually we encourage you to use the provided
+[fetch.sh](https://raw.github.com/Cyber-Incident-Monitor/TraCINg-Server/master/fetch.sh)
+script to download them automatically along with the MaxMind GeoLiteCity database described in the next section.
+
+### MaxMind GeoLiteCity Database ###
+One must download the **GeoLiteCity.dat** file provided by MaxMind at
+http://dev.maxmind.com/geoip/legacy/geolite/ and place it in the same folder as **index.js**.
+
+### Certificates ###
+To run the HTTPS server part one must provide at least a self signed server certificate
 along with the corresponding private key.
 To use the server to its full extent (with sensor authentification) one must prepare a
 public-key infrastructure (PKI) containing a certificate authority (CA) which signs the
@@ -76,7 +134,20 @@ Hence one must provide the following files:
 
 Note that the certificates and private keys must be provided in the pem format.
 
-#### Configuration file ####
+To test the functionality one may use the provided
+[genKeyCert.sh](https://raw.github.com/Cyber-Incident-Monitor/TraCINg-Server/master/genKeyCert.sh)
+script which generates CA, server, simulator and several client certificate/private key pairs in
+the **ssl** folder. Note that these keys are weak (only 1024 bit long and not encrypted with a passphrase) and
+are valid for just three days.
+
+## Usage ##
+To start the server execute `node index.js`. If the servers private key is encrypted you must unlock the
+key by entering the passphrase.  
+You may use the [simulator](https://github.com/Cyber-Incident-Monitor/TraCINg-Server/blob/master/simulator.py)
+(requires python 3 along with the [Requests library](http://docs.python-requests.org/en/latest/)) to simulate
+a sensor and thus test the functionality of the server.
+
+### Configuration file ###
 The server comes with a configuration file (config.json) which must be adapted to the users preferences:
 ```json
 {

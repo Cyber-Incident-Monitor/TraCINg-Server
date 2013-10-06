@@ -579,6 +579,28 @@ var world = new function() {
 		);
 	}
 	
+
+	function updateAttackTableHeight() {
+		var attackTable = $("#attackTable").dataTable();
+	
+		var height = $(window).height();
+	
+		height -= $("#table .dataTables_scrollBody").offset().top;
+		height -= $("#table .dataTables_scroll + div").height();
+	
+		console.log("attackTableHeight: " + height);
+	
+		$("#table .dataTables_scrollBody").css({"max-height": height});
+	}
+
+	/**
+	 * resize table
+	 */
+	function resize() {
+		updateAttackTableHeight();
+		$("#attackTable").dataTable().fnDraw();
+	}
+	this.resize = resize;
 }
 
 function showLog(id){
@@ -601,25 +623,10 @@ $(function(){
 	});
 
 	setTimeout(function() {
-		updateAttackTableHeight();
-		$("#attackTable").dataTable().fnDraw();
+		world.resize();
 	}, 10);
 });
 
-function updateAttackTableHeight() {
-	var attackTable = $("#attackTable").dataTable();
-
-	var height = $(window).height();
-
-	height -= $("#table .dataTables_scrollBody").offset().top;
-	height -= $("#table .dataTables_scroll + div").height();
-
-	console.log("attackTableHeight: " + height);
-
-	$("#table .dataTables_scrollBody").css({"max-height": height});
-}
-
 $(window).resize($.throttle(250,function() {
-	updateAttackTableHeight();
-	$("#attackTable").dataTable().fnDraw();
+	world.resize();
 }));
