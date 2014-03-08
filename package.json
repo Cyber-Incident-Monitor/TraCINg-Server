@@ -17,13 +17,13 @@
 	},
 	"scripts": {"start": "node index.js"},
 	"dependencies": {
-		"socket.io": "0.9.16",
-		"socket.io-client": "0.9.16",
-		"sqlite3": "2.1.17",
-		"orm": "2.1.2",
-		"node-static": "0.7.1",
+		"socket.io": "*",
+		"socket.io-client": "*",
+		"sqlite3": ">=2.1.16",
+		"orm": ">=2.1.1",
+		"node-static": "*",
 		"geoip": "0.4.10",
-		"validator": "1.5.1"
+		"validator": "<3.0.0"
 	},
 	"engines": {
 		"node": ""
