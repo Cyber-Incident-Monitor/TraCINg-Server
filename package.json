@@ -1,0 +1,32 @@
+{
+	"name": "Cyber-Incident-Monitor",
+	"version": "1.0.0",
+	"description": "A webserver gathering malware incidents and visualizing them in multiple ways",
+	"homepage": "https://github.com/Cyber-Incident-Monitor/TraCINg-Server",
+	"bugs": "https://github.com/Cyber-Incident-Monitor/TraCINg-Server/issues",
+	"license": "Apache-2.0",
+	"contributors": [
+		{"name": "Matthias Gazzari"},
+		{"name": "Annemarie Mattmann"},
+		{"name": "André Wolski"}
+	],
+	"main": "./index.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Cyber-Incident-Monitor/TraCINg-Server.git"
+	},
+	"scripts": {"start": "node index.js"},
+	"dependencies": {
+		"socket.io": "0.9.16",
+		"socket.io-client": "0.9.16",
+		"sqlite3": "2.1.17",
+		"orm": "2.1.2",
+		"node-static": "0.7.1",
+		"geoip": "0.4.10",
+		"validator": "1.5.1"
+	},
+	"engines": {
+		"node": ""
+	},
+	"private": true
+}
