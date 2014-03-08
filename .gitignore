@@ -1,4 +1,8 @@
+node_modules
 frontend/extern
+GeoLiteCity.dat.gz
 ssl
 *.pem
 *.dat
+*.swp
+*.swo
