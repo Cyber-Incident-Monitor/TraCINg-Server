@@ -96,7 +96,7 @@ Additionally the following [npm](https://npmjs.org/) packages are required to be
 * [geoip](https://npmjs.org/package/geoip)
 * [validator](https://npmjs.org/package/validator)
 
-For example using npm locally: `npm install socket.io sqlite3 orm node-static geoip validator`
+You can call `npm install` in the root directory of this repository to install the dependencies.
 
 ### Website Libraries ###
 To run the website one must provide several external libraries (at least the javascript and css files)
