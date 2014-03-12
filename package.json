@@ -1,6 +1,6 @@
 {
 	"name": "Cyber-Incident-Monitor",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A webserver gathering malware incidents and visualizing them in multiple ways",
 	"homepage": "https://github.com/Cyber-Incident-Monitor/TraCINg-Server",
 	"bugs": "https://github.com/Cyber-Incident-Monitor/TraCINg-Server/issues",
