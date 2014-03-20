@@ -208,10 +208,6 @@ function getConditions(filter){
 			types.push(parseInt(filter["types"][i], 10));
 		}
 		
-		conditions["type"] = types;
-
-		/*
-		TODO: wait for https://github.com/dresende/node-sql-query/issues/24
 		if(types.indexOf(0) != -1){
 			var not_in = [];
 			for(var i = 0; i < fields.validTypes.length; i++) {
@@ -225,7 +221,6 @@ function getConditions(filter){
 		else{
 			conditions["type"] = types;
 		}
-		*/
 	}
 	
 	if(filter.hasOwnProperty("sensors")){
