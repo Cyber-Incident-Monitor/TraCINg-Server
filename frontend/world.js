@@ -333,12 +333,13 @@ var world = new function() {
 			}
 		}
 		// mark on streetmap and try to animate
-		if (streetmapObject != undefined)
+		if (streetmapObject != undefined) {
 			streetmapKey = streetmapObject.addMarker(data.src.ll, sourceColor, sourceLabel);
 			if (currentView == view.STREETMAP && !noAnimation) {
 				var pos = streetmapObject.getPosition(data.src.ll[0], data.src.ll[1]);
 				animateMarker(pos.x, pos.y, sourceColor, "#streetmap", streetmapKey);
 			}
+		}
 		// mark on 3d map
 		if (globeObject != undefined && globeObject.addMarker != undefined) {
 			globeKey = globeObject.addMarker(data.src.cc, data.src.ll[0], data.src.ll[1], sourceLabel);
